@@ -2,92 +2,78 @@ import streamlit as st
 import streamlit.components.v1 as components
 import random
 import os
+import time
+import requests
 
-# --- CONFIGURATION DORKNET ---
 st.set_page_config(page_title="DorkNet Xchange | Core", layout="wide", initial_sidebar_state="collapsed")
 
-# Masquer l'interface Streamlit
-st.markdown("""
-    <style>
-        header {visibility: hidden;}
-        footer {visibility: hidden;}
-        #MainMenu {visibility: hidden;}
-        .stApp { background-color: #1a1a1a; }
-        .block-container { padding: 0rem; }
-        iframe { display: block; margin: auto; border: none; }
-    </style>
-""", unsafe_allow_html=True)
+# --- ENGINE : PRIX TEMPS RÉEL VIA API ---
+def get_live_market_data():
+    try:
+        # Requête vers CoinGecko pour BTC et une monnaie de référence
+        response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true", timeout=5)
+        data = response.json()
+        
+        btc_price = data['bitcoin']['usd']
+        btc_change = data['bitcoin']['usd_24h_change']
+        
+        # Le DNX est indexé sur une fraction du BTC + une volatilité propre au Dr Numbi
+        dnx_price = round((btc_price / 50000) + random.uniform(0.1, 0.3), 2)
+        
+        return {
+            "btc": "{:,}".format(int(btc_price)).replace(",", " "),
+            "dnx": dnx_price,
+            "change": round(btc_change, 1)
+        }
+    except Exception as e:
+        # Backup si l'API est hors ligne
+        return {
+            "btc": "65 432",
+            "dnx": 1.24,
+            "change": 12.5
+        }
 
-# --- BASE DE DONNÉES DES OMBRES ---
+# --- GESTION DU VAULT ET DU RENDU ---
 DB_FILE = "vault_messages.txt"
 
 def save_to_vault(msg):
-    """Enregistre le message scellé dans le fichier secret"""
     if msg:
         with open(DB_FILE, "a", encoding="utf-8") as f:
-            f.write(f"[{time.strftime('%Y-%m-%d %H:%M')}] : {msg}\n")
+            f.write(f"[{time.strftime('%H:%M')}] : {msg}\n")
 
-# --- ENGINE : PRIX TEMPS RÉEL ---
-def get_live_market_data():
-    return {
-        "btc": "{:,}".format(65432 + random.randint(-100, 300)).replace(",", " "),
-        "dnx": round(random.uniform(1.21, 1.38), 2),
-        "change": round(random.uniform(8.5, 14.2), 1)
-    }
-
-# --- LOGIQUE D'INTERCEPTION ---
 params = st.query_params
 if "msg" in params:
-    import time
     save_to_vault(params["msg"])
-    # Rediriger proprement pour éviter les doublons
     st.query_params.clear()
     st.query_params.update(p="chat")
     st.rerun()
 
-# --- VUE : VISUALISATION SECRÈTE (LE VAULT) ---
-def show_secret_vault():
-    st.markdown(f"""
-        <div style="background-color: #f4ece1; padding: 50px; border: 3px double #2b2621; 
-                    font-family: 'Special Elite', serif; width: 80%; margin: auto; min-height: 80vh;
-                    background-image: url('https://www.transparenttextures.com/patterns/paper.png');">
-            <h1 style="font-family: 'UnifrakturMaguntia'; text-align: center; border-bottom: 2px solid black;">
-                ARCHIVES SCELLÉES DU DR NUMBI
-            </h1>
-            <div style="margin-top: 30px; font-size: 1.2rem; color: #2b2621;">
-    """, unsafe_allow_html=True)
-    
-    if os.path.exists(DB_FILE):
-        with open(DB_FILE, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-            for line in reversed(lines): # Les plus récents en premier
-                st.markdown(f"<code>{line}</code><br><hr style='border: 1px dashed rgba(0,0,0,0.1)'>", unsafe_allow_html=True)
-    else:
-        st.write("AUCUNE ARCHIVE DÉTECTÉE.")
-    
-    st.markdown("</div></div>", unsafe_allow_html=True)
+def serve_page(file_name, is_market=False):
+    try:
+        with open(file_name, "r", encoding="utf-8") as f:
+            html = f.read()
+        
+        if is_market:
+            data = get_live_market_data()
+            html = html.replace("$1.24", f"${data['dnx']}")
+            html = html.replace("+ 12.5%", f"{data['change']}%")
+            html = html.replace("$65,432", f"${data['btc']}")
+            
+        components.html(html, height=1300)
+    except:
+        st.error(f"Fichier {file_name} manquant.")
 
 # --- ROUTAGE ---
 target = params.get("p", "chat")
 
 if target == "vault":
-    # Protection par mot de passe simple
     pwd = st.sidebar.text_input("SÉCURITÉ DR_NUMBI", type="password")
-    if pwd == "NUMBI_2026": # Modifiez votre code ici
-        show_secret_vault()
-    else:
-        st.warning("ACCÈS REFUSÉ : SIGNATURE INCORRECTE")
+    if pwd == "NUMBI_2026":
+        st.title("ARCHIVES SCELLÉES")
+        if os.path.exists(DB_FILE):
+            with open(DB_FILE, "r") as f: st.code(f.read())
+    else: st.warning("ACCÈS REFUSÉ")
 elif target == "market":
-    try:
-        with open("market.html", "r", encoding="utf-8") as f:
-            content = f.read()
-        data = get_live_market_data()
-        content = content.replace("$1.24", f"${data['dnx']}").replace("$65,432", f"${data['btc']}")
-        components.html(content, height=1300)
-    except: st.error("Fichier market.html manquant.")
+    serve_page("market.html", is_market=True)
 else:
-    try:
-        with open("index.html", "r", encoding="utf-8") as f:
-            content = f.read()
-        components.html(content, height=1300)
-    except: st.error("Fichier index.html manquant.")
+    serve_page("index.html")
