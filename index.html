@@ -39,27 +39,28 @@
             z-index: 1;
         }
 
-        /* --- SCEAU OFFICIEL EN FILIGRANE --- */
+        /* --- SCEAU OFFICIEL DR NUMBI (FILIGRANE CORRIGÉ) --- */
         .official-seal-bg {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            background-image: url('https://r.jina.ai/i/669d0346067b420f92f2549219d20f01'); /* URL de votre sceau */
+            width: 650px;
+            height: 650px;
+            /* Utilisation du lien permanent pour l'image du sceau */
+            background-image: url('https://i.ibb.co/v6m4V5S/dorknet-seal.png'); 
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.08; /* Très subtil pour l'effet parchemin */
+            opacity: 0.15; /* Opacité ajustée pour visibilité optimale */
             z-index: -1;
             pointer-events: none;
             animation: seal-pulse 8s infinite ease-in-out;
         }
 
         @keyframes seal-pulse {
-            0% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.12; transform: translate(-50%, -50%) scale(1.05); }
-            100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+            0% { opacity: 0.10; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.20; transform: translate(-50%, -50%) scale(1.03); }
+            100% { opacity: 0.10; transform: translate(-50%, -50%) scale(1); }
         }
 
         /* --- NAVIGATION HUB --- */
@@ -104,7 +105,8 @@
         section {
             border: 1px solid var(--ink-color);
             padding: 15px;
-            background: rgba(255,255,255,0.4); /* Légère transparence pour voir le sceau */
+            /* Transparence augmentée pour laisser passer le sceau */
+            background: rgba(255,255,255,0.35); 
             backdrop-filter: blur(1px);
         }
 
@@ -164,7 +166,7 @@
         textarea {
             width: 96%;
             height: 60px;
-            background: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.5);
             border: 1px solid var(--ink-color);
             font-family: 'Special Elite';
             padding: 10px;
