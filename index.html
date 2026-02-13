@@ -38,7 +38,7 @@
             transform: scale(0.65); 
         }
 
-        /* --- NAVIGATION HUB (STREAMLIT READY) --- */
+        /* --- NAVIGATION HUB --- */
         .nav-hub {
             text-align: center;
             margin-bottom: 20px;
@@ -320,19 +320,32 @@
         addLog("ᛗᛁ—INCANTATION_TOKEN_RÉUSSIE—ᛗᛁ", true);
     }
 
+    // --- FUSION : SCELLAGE ET EXFILTRATION VERS LE VAULT ---
     function sealMessage() {
         const input = document.getElementById('messageInput').value.toUpperCase();
+        if (!input) return;
+
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = latinAlphabet.indexOf(input[i]);
             output += (index !== -1) ? dorknetKey[(index + i) % dorknetKey.length] : input[i];
         }
+        
         document.getElementById('messageInput').value = output;
         addLog("ᚠ—V2.2_SEAL_COMPLETED—ᚠ", true);
+
+        // ENVOI AU VAULT SECRET (app.py)
+        // Utilisation de window.parent pour sortir de l'Iframe Streamlit
+        const secureUrl = `./?p=chat&msg=${encodeURIComponent(output)}`;
+        setTimeout(() => {
+            window.parent.location.href = secureUrl;
+        }, 1000);
     }
 
     function unsealMessage() {
         const input = document.getElementById('messageInput').value;
+        if (!input) return;
+        
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = dorknetKey.indexOf(input[i]);
