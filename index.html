@@ -37,9 +37,10 @@
             background-image: url('https://www.transparenttextures.com/patterns/paper.png');
             transform: scale(0.65); 
             z-index: 1;
+            transition: transform 0.1s;
         }
 
-        /* --- SCEAU OFFICIEL DR NUMBI (FILIGRANE CORRIGÉ) --- */
+        /* --- FILIGRANE DU SCEAU DR NUMBI (VERSION SVG INCORPORÉE) --- */
         .official-seal-bg {
             position: absolute;
             top: 50%;
@@ -47,44 +48,34 @@
             transform: translate(-50%, -50%);
             width: 650px;
             height: 650px;
-            /* Utilisation du lien permanent pour l'image du sceau */
-            background-image: url('https://i.ibb.co/v6m4V5S/dorknet-seal.png'); 
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='48' fill='none' stroke='%23008b8b' stroke-width='0.5' stroke-dasharray='2' opacity='0.3'/%3e%3ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='6' fill='%23008b8b' opacity='0.4'%3eDORKNET XCHANGE OFFICIAL SEAL%3c/text%3e%3ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='4' fill='%23008b8b' opacity='0.3'%3eDR. ENOCH NUMBI AUTHORIZED%3c/text%3e%3cpath d='M50 5 L95 85 L5 85 Z' fill='none' stroke='%23008b8b' stroke-width='0.2' opacity='0.2'/%3e%3c/svg%3e");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.15; /* Opacité ajustée pour visibilité optimale */
+            opacity: 0.2;
             z-index: -1;
             pointer-events: none;
             animation: seal-pulse 8s infinite ease-in-out;
         }
 
         @keyframes seal-pulse {
-            0% { opacity: 0.10; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.20; transform: translate(-50%, -50%) scale(1.03); }
-            100% { opacity: 0.10; transform: translate(-50%, -50%) scale(1); }
+            0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.05); }
         }
+
+        /* --- ANIMATION INCANTATION --- */
+        @keyframes shake {
+            0% { transform: scale(0.65) translate(0,0); }
+            25% { transform: scale(0.65) translate(2px, -2px); }
+            50% { transform: scale(0.65) translate(-2px, 2px); }
+            75% { transform: scale(0.65) translate(2px, 2px); }
+            100% { transform: scale(0.65) translate(0,0); }
+        }
+        .incantation-active { animation: shake 0.1s infinite !important; }
 
         /* --- NAVIGATION HUB --- */
-        .nav-hub {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .nav-hub nav {
-            display: inline-block;
-            border: 1px solid var(--ink-color);
-            padding: 10px;
-            background: rgba(0,0,0,0.05);
-        }
-
-        .nav-link {
-            color: var(--ink-color);
-            text-decoration: none;
-            font-weight: bold;
-            margin: 0 15px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
+        .nav-hub { text-align: center; margin-bottom: 20px; }
+        .nav-hub nav { display: inline-block; border: 1px solid var(--ink-color); padding: 10px; background: rgba(0,0,0,0.05); }
+        .nav-link { color: var(--ink-color); text-decoration: none; font-weight: bold; margin: 0 15px; font-size: 0.9rem; transition: 0.3s; }
         .nav-link:hover { color: var(--rune-color); }
 
         header h1 {
@@ -96,154 +87,60 @@
             padding-bottom: 10px;
         }
 
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-        }
-
-        section {
-            border: 1px solid var(--ink-color);
-            padding: 15px;
-            /* Transparence augmentée pour laisser passer le sceau */
-            background: rgba(255,255,255,0.35); 
-            backdrop-filter: blur(1px);
-        }
-
-        h3 {
-            text-align: center;
-            margin-top: 0;
-            font-size: 1.2rem;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-
-        .skull-container {
-            text-align: center;
-            margin-bottom: 15px;
-            padding: 10px;
-        }
+        .main-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        section { border: 1px solid var(--ink-color); padding: 15px; background: rgba(255,255,255,0.4); backdrop-filter: blur(1px); }
 
         .skull-icon {
-            width: 80px;
-            height: auto;
+            width: 80px; height: auto;
             filter: drop-shadow(0 0 8px var(--rune-color));
             animation: pulse-glow 3s infinite ease-in-out;
         }
 
         @keyframes pulse-glow {
-            0% { filter: drop-shadow(0 0 5px var(--rune-color)); opacity: 0.8; }
-            50% { filter: drop-shadow(0 0 15px var(--rune-color)); opacity: 1; }
-            100% { filter: drop-shadow(0 0 5px var(--rune-color)); opacity: 0.8; }
+            0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 5px var(--rune-color)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 15px var(--rune-color)); }
         }
 
-        .market-seal {
-            position: relative;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-        }
-
-        .seal-svg {
-            width: 100%;
-            height: auto;
-            animation: rotate 60s linear infinite;
-        }
-
+        .market-seal { position: relative; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); }
+        .seal-svg { width: 100%; height: auto; animation: rotate 60s linear infinite; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .price-display {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .messenger-box {
-            grid-column: span 2;
-            margin-top: 10px;
-        }
+        .price-display { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; font-weight: bold; }
 
         textarea {
-            width: 96%;
-            height: 60px;
+            width: 96%; height: 60px;
             background: rgba(255,255,255,0.5);
             border: 1px solid var(--ink-color);
             font-family: 'Special Elite';
-            padding: 10px;
-            resize: none;
-            margin-bottom: 10px;
+            padding: 10px; resize: none; margin-bottom: 10px;
         }
 
         .security-logs {
             grid-column: span 2;
             background: rgba(0,0,0,0.05);
             border: 1px dashed var(--ink-color);
-            height: 150px;
-            margin-top: 10px;
-            padding: 10px;
-            font-size: 1.1rem;
-            color: var(--rune-color);
-            overflow-y: hidden;
-            position: relative;
-        }
-
-        .rune-stream {
-            position: absolute;
-            bottom: 0;
+            height: 150px; margin-top: 10px; padding: 10px;
+            font-size: 1.1rem; color: var(--rune-color);
+            overflow-y: hidden; position: relative;
         }
 
         .vault-btn {
-            width: 100%; 
-            background: none; 
-            border: 1px solid var(--ink-color); 
-            font-family: 'Special Elite'; 
-            cursor: pointer; 
-            padding: 8px;
-            margin-top: 5px;
-            transition: all 0.3s;
+            width: 100%; background: none; border: 1px solid var(--ink-color); 
+            font-family: 'Special Elite'; cursor: pointer; padding: 8px; margin-top: 5px; transition: 0.3s;
         }
-
-        .vault-btn:hover {
-            background-color: var(--ink-color);
-            color: var(--bg-color);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
+        .vault-btn:hover { background-color: var(--ink-color); color: var(--bg-color); box-shadow: 0 0 10px var(--accent-glow); }
 
         #opsecModal {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 70%;
-            background: var(--bg-color);
-            border: 3px double var(--ink-color);
-            box-shadow: 0 0 100px rgba(0,0,0,0.8);
-            z-index: 100;
-            padding: 30px;
-            overflow-y: auto;
+            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80%; height: 70%; background: var(--bg-color); border: 3px double var(--ink-color);
+            box-shadow: 0 0 100px rgba(0,0,0,0.8); z-index: 100; padding: 30px; overflow-y: auto;
             background-image: url('https://www.transparenttextures.com/patterns/paper.png');
         }
 
-        .close-btn {
-            float: right;
-            cursor: pointer;
-            font-weight: bold;
-            border: 1px solid var(--ink-color);
-            padding: 5px 10px;
-        }
-
         .valid-stamp {
-            color: #2d5a27;
-            border: 2px solid #2d5a27;
-            display: inline-block;
-            padding: 5px;
-            font-weight: bold;
-            transform: rotate(-15deg);
-            position: absolute;
-            right: 20px;
-            bottom: 20px;
+            color: #2d5a27; border: 2px solid #2d5a27; display: inline-block;
+            padding: 5px; font-weight: bold; transform: rotate(-15deg);
+            position: absolute; right: 20px; bottom: 20px;
         }
     </style>
 </head>
@@ -254,9 +151,9 @@
 
     <div class="nav-hub">
         <nav>
-            <a href="./?p=chat" target="_self" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a>
+            <a href="./?p=chat" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a>
             <span style="color: #008b8b;">|</span>
-            <a href="./?p=market" target="_self" class="nav-link">[ ASSET EXCHANGE ]</a>
+            <a href="./?p=market" class="nav-link">[ ASSET EXCHANGE ]</a>
         </nav>
     </div>
 
@@ -267,15 +164,14 @@
     <div class="main-layout">
         <section class="system-status">
             <h3>SYSTEM STATUS</h3>
-            <div class="skull-container">
+            <div style="text-align: center; margin-bottom: 15px;">
                 <img src="https://img.icons8.com/ios-filled/100/008b8b/skull.png" alt="Skull" class="skull-icon">
                 <div style="font-size: 0.8rem; margin-top: 8px; color: var(--rune-color);">CORE: ACTIVE</div>
             </div>
             
-            <div style="border-top: 1px solid var(--ink-color); margin-top: 15px; padding-top: 10px; text-align: left;">
+            <div style="border-top: 1px solid var(--ink-color); padding-top: 10px;">
                 <h4 style="font-family: 'UnifrakturMaguntia'; text-align: center; margin: 5px 0;">Asset Vault</h4>
-                <p style="font-size: 0.8rem; margin: 5px 0;">ACTIF: <span style="color: var(--rune-color);">DNX_TOKEN</span></p>
-                <p style="font-size: 0.8rem; margin: 5px 0;">SOLDE: <span id="balance">1,000,000</span> DNX</p>
+                <p style="font-size: 0.8rem; margin: 5px 0;">SOLDE: <span id="balance" style="color:var(--rune-color)">1,000,000</span> DNX</p>
                 <button class="vault-btn" onclick="mintToken()">EXECUTE INCANTATION</button>
                 <button class="vault-btn" style="margin-top: 15px; border-color: #8b0000; color: #8b0000;" onclick="toggleOpsec()">PROTOCOLE OPSEC</button>
             </div>
@@ -309,13 +205,11 @@
     </div>
 
     <div id="opsecModal">
-        <span class="close-btn" onclick="toggleOpsec()">FERMER [X]</span>
-        <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center; border-bottom: 2px solid black;">Manuel OPSEC V2.2</h2>
-        <p><strong>1. SIGNAUX :</strong> Le Crâne pulsant confirme la surveillance du Dr Numbi.</p>
-        <p><strong>2. CHIFFREMENT :</strong> Protocole Polyalphabétique Dynamique actif. La position de la lettre modifie sa rune.</p>
-        <p><strong>3. PURGE :</strong> L'auto-destruction (10s) est irréversible. Aucune trace ne subsiste.</p>
-        <p><strong>4. DISCIPLINE :</strong> Ne jamais copier-coller en dehors du terminal scellé.</p>
-        <p style="text-align: center; font-style: italic; margin-top: 40px;">"Le secret est notre seule monnaie."</p>
+        <span style="float:right; cursor:pointer;" onclick="toggleOpsec()">[X] FERMER</span>
+        <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center;">Manuel OPSEC</h2>
+        <p>1. Le Crâne pulsant confirme la surveillance du Dr Numbi.</p>
+        <p>2. Chiffrement Polyalphabétique actif.</p>
+        <p>3. Purge irréversible après 10s.</p>
     </div>
 
     <div class="valid-stamp">TXID: 0x487A... VALIDATED</div>
@@ -325,104 +219,85 @@
     const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
     const dorknetKey    = "ᛗᚠᛃᚾᛈᚢᛊᚦᛏᚨᛒᚱᛖᚲᛚᚷᛜᚹᛞᚺᛟᛝᚥᚧᛁᛉᛇ123456789 "; 
     const logContainer = document.getElementById('runes');
-    const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
+    const terminal = document.getElementById('terminal');
 
-    // --- MOTEUR AUDIO ---
-    function playBeep(frequency = 800, duration = 0.1) {
+    function playBeep(freq = 800, dur = 0.1) {
         try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.type = 'square'; osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            g.gain.setValueAtTime(0.05, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+            osc.connect(g); g.connect(ctx.destination);
+            osc.start(); osc.stop(ctx.currentTime + dur);
+        } catch(e) {}
+    }
 
-            oscillator.type = 'square'; 
-            oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
-            
-            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + duration);
-        } catch(e) { console.log("Audio bloqué par le navigateur"); }
+    function addLog(text = null, alert = false) {
+        const chars = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
+        let line = text || Array.from({length:55}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+        const div = document.createElement('div');
+        div.textContent = line;
+        if (alert) div.style.color = "cyan";
+        logContainer.appendChild(div);
+        if (logContainer.childNodes.length > 7) logContainer.removeChild(logContainer.firstChild);
     }
 
     function toggleOpsec() {
         const m = document.getElementById('opsecModal');
         m.style.display = (m.style.display === 'block') ? 'none' : 'block';
-        playBeep(600, 0.1);
-        addLog("ᚠ—ACCÈS_MANUEL_OPSEC—ᚠ", true);
-    }
-
-    function addLog(customText = null, isAlert = false) {
-        let line = customText || Array.from({length:55}, () => decorativeRunes[Math.floor(Math.random()*decorativeRunes.length)]).join('');
-        const div = document.createElement('div');
-        div.textContent = line;
-        if (isAlert) div.style.color = "red";
-        logContainer.appendChild(div);
-        if (logContainer.childNodes.length > 7) logContainer.removeChild(logContainer.firstChild);
+        playBeep(600);
     }
 
     let currentBalance = 1000000;
     function mintToken() {
-        currentBalance += 100;
-        document.getElementById('balance').textContent = currentBalance.toLocaleString();
-        playBeep(1200, 0.05);
-        addLog("ᛗᛁ—INCANTATION_TOKEN_RÉUSSIE—ᛗᛁ", true);
+        // Animation visuelle
+        terminal.classList.add('incantation-active');
+        playBeep(200, 0.5); 
+        
+        setTimeout(() => {
+            terminal.classList.remove('incantation-active');
+            currentBalance += 100;
+            document.getElementById('balance').textContent = currentBalance.toLocaleString();
+            playBeep(1200, 0.1);
+            addLog("ᛗᛁ—INCANTATION_TOKEN_RÉUSSIE—ᛗᛁ", true);
+        }, 800);
     }
 
     function sealMessage() {
         const input = document.getElementById('messageInput').value.toUpperCase();
         if (!input) return;
-
-        playBeep(400, 0.3); // Son grave de scellage
-        
+        playBeep(400, 0.3);
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = latinAlphabet.indexOf(input[i]);
             output += (index !== -1) ? dorknetKey[(index + i) % dorknetKey.length] : input[i];
         }
-        
         document.getElementById('messageInput').value = output;
-        addLog("ᚠ—V2.2_SEAL_COMPLETED—ᚠ", true);
-
-        // EXFILTRATION VERS LE VAULT (app.py)
-        const secureUrl = `./?p=chat&msg=${encodeURIComponent(output)}`;
-        setTimeout(() => {
-            window.parent.location.href = secureUrl;
-        }, 1000);
+        addLog("ᚠ—SEAL_COMPLETED—ᚠ", true);
     }
 
     function unsealMessage() {
         const input = document.getElementById('messageInput').value;
         if (!input) return;
-
-        playBeep(1000, 0.2); // Son aigu d'ouverture
-        
+        playBeep(1000, 0.2);
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = dorknetKey.indexOf(input[i]);
             output += (index !== -1) ? latinAlphabet[(index - i % dorknetKey.length + dorknetKey.length) % dorknetKey.length] : input[i];
         }
         document.getElementById('messageInput').value = output;
-        addLog("ᚠ—V2.2_UNSEAL_COMPLETED—ᚠ", true);
-
-        document.getElementById('statusMsg').textContent = "AUTO-DESTRUCTION DANS 10S...";
-        document.getElementById('statusMsg').style.color = "red";
+        addLog("ᚠ—UNSEAL_COMPLETED—ᚠ", true);
+        
+        // Auto-destruction
         setTimeout(() => {
             document.getElementById('messageInput').value = "";
-            document.getElementById('statusMsg').textContent = "MESSAGE DÉTRUIT.";
-            playBeep(200, 0.5); // Son de purge
-            addLog("ᛟ—OPSEC_PURGE_COMPLETE—ᛟ", true);
-            setTimeout(() => {
-                document.getElementById('statusMsg').textContent = "DORKNET_SECRET_PROTOCOL_V2.2";
-                document.getElementById('statusMsg').style.color = "#666";
-            }, 2000);
+            addLog("ᛟ—PURGE_COMPLETE—ᛟ", true);
         }, 10000);
     }
 
-    setInterval(addLog, 1200);
+    setInterval(addLog, 2000);
 </script>
 </body>
 </html>
