@@ -36,6 +36,30 @@
             position: relative;
             background-image: url('https://www.transparenttextures.com/patterns/paper.png');
             transform: scale(0.65); 
+            z-index: 1;
+        }
+
+        /* --- SCEAU OFFICIEL EN FILIGRANE --- */
+        .official-seal-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background-image: url('https://r.jina.ai/i/669d0346067b420f92f2549219d20f01'); /* URL de votre sceau */
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.08; /* Très subtil pour l'effet parchemin */
+            z-index: -1;
+            pointer-events: none;
+            animation: seal-pulse 8s infinite ease-in-out;
+        }
+
+        @keyframes seal-pulse {
+            0% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.12; transform: translate(-50%, -50%) scale(1.05); }
+            100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
         }
 
         /* --- NAVIGATION HUB --- */
@@ -80,7 +104,8 @@
         section {
             border: 1px solid var(--ink-color);
             padding: 15px;
-            background: rgba(0,0,0,0.02);
+            background: rgba(255,255,255,0.4); /* Légère transparence pour voir le sceau */
+            backdrop-filter: blur(1px);
         }
 
         h3 {
@@ -139,7 +164,7 @@
         textarea {
             width: 96%;
             height: 60px;
-            background: rgba(0,0,0,0.05);
+            background: rgba(255,255,255,0.6);
             border: 1px solid var(--ink-color);
             font-family: 'Special Elite';
             padding: 10px;
@@ -223,6 +248,8 @@
 <body>
 
 <div id="terminal">
+    <div class="official-seal-bg"></div>
+
     <div class="nav-hub">
         <nav>
             <a href="./?p=chat" target="_self" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a>
