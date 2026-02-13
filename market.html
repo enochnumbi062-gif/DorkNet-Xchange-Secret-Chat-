@@ -29,7 +29,18 @@
             transform: scale(0.65); 
             position: relative;
             z-index: 1;
+            transition: transform 0.1s; /* Pour la fluidité du shake */
         }
+
+        /* --- ANIMATION SISMIQUE --- */
+        @keyframes shake {
+            0% { transform: scale(0.65) translate(0,0); }
+            25% { transform: scale(0.65) translate(3px, -3px); }
+            50% { transform: scale(0.65) translate(-3px, 3px); }
+            75% { transform: scale(0.65) translate(3px, 3px); }
+            100% { transform: scale(0.65) translate(0,0); }
+        }
+        .forge-ritual { animation: shake 0.1s infinite !important; }
 
         /* --- FILIGRANE DU SCEAU DR NUMBI (VERSION SÉCURISÉE) --- */
         .official-seal-bg {
@@ -39,8 +50,7 @@
             transform: translate(-50%, -50%);
             width: 500px;
             height: 500px;
-            /* J'utilise ici un SVG intégré pour garantir qu'il ne disparaisse jamais */
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='48' fill='none' stroke='%23008b8b' stroke-width='0.5' stroke-dasharray='2' opacity='0.3'/%3e%3ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='8' fill='%23008b8b' opacity='0.3'%3eDR. NUMBI OFFICIAL SEAL%3c/text%3e%3cpath d='M50 10 L90 80 L10 80 Z' fill='none' stroke='%23008b8b' stroke-width='0.2' opacity='0.2'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='48' fill='none' stroke='%23008b8b' stroke-width='0.5' stroke-dasharray='2' opacity='0.3'/%3e%3ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='7' fill='%23008b8b' opacity='0.4'%3eDR. NUMBI OFFICIAL SEAL%3c/text%3e%3cpath d='M50 10 L90 80 L10 80 Z' fill='none' stroke='%23008b8b' stroke-width='0.2' opacity='0.2'/%3e%3c/svg%3e");
             background-size: contain;
             background-repeat: no-repeat;
             opacity: 0.2;
@@ -50,14 +60,14 @@
         }
 
         @keyframes seal-pulse {
-            0% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+            0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
             50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.05); }
-            100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
         }
 
         /* --- NAVIGATION --- */
         .nav-hub { text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.1); }
-        .nav-link { color: var(--ink-color); text-decoration: none; font-weight: bold; margin: 0 15px; font-size: 0.9rem; }
+        .nav-link { color: var(--ink-color); text-decoration: none; font-weight: bold; margin: 0 15px; font-size: 0.9rem; transition: 0.3s; }
+        .nav-link:hover { color: var(--rune-color); }
         
         header h1 { font-family: 'UnifrakturMaguntia', serif; font-size: 3rem; text-align: center; border-bottom: 3px double var(--ink-color); margin: 10px 0 20px 0; }
 
@@ -74,7 +84,9 @@
         th { border-bottom: 1px solid var(--ink-color); padding: 10px; text-align: left; }
         td { padding: 8px; border-bottom: 1px dashed rgba(0,0,0,0.1); }
 
-        .btn-action { background: var(--ink-color); color: var(--bg-color); border: none; padding: 12px 25px; cursor: pointer; font-family: 'Special Elite'; }
+        .btn-action { background: var(--ink-color); color: var(--bg-color); border: none; padding: 12px 25px; cursor: pointer; font-family: 'Special Elite'; transition: 0.3s; }
+        .btn-action:hover { box-shadow: 0 0 15px var(--rune-color); }
+        
         .security-logs { background: rgba(0,0,0,0.05); border: 1px dashed var(--ink-color); height: 80px; margin-top: 20px; padding: 10px; color: var(--rune-color); overflow: hidden; }
         .valid-stamp { color: #2d5a27; border: 2px solid #2d5a27; padding: 5px; font-weight: bold; transform: rotate(-10deg); position: absolute; right: 20px; bottom: 10px; opacity: 0.6; }
     </style>
@@ -86,9 +98,9 @@
 
     <div class="nav-hub">
         <nav>
-            <a href="#" class="nav-link">[ ABYSSAL CHAT ]</a>
+            <a href="./?p=chat" class="nav-link">[ ABYSSAL CHAT ]</a>
             <span style="color: #008b8b;">|</span>
-            <a href="#" class="nav-link" style="color: #008b8b;">[ ASSET EXCHANGE ]</a>
+            <a href="./?p=market" class="nav-link" style="color: #008b8b;">[ ASSET EXCHANGE ]</a>
         </nav>
     </div>
 
@@ -111,29 +123,66 @@
     <div class="trade-zone">
         <h3>LIVRE D'ORDRES SCELLÉS</h3>
         <table>
-            <tr><th>TYPE</th><th>MONTANT</th><th>STATUT</th></tr>
-            <tr><td>ACHAT</td><td>500 DNX</td><td style="color:green">SCELLÉ</td></tr>
+            <thead>
+                <tr><th>TYPE</th><th>MONTANT</th><th>STATUT</th></tr>
+            </thead>
+            <tbody id="order-book">
+                <tr><td>ACHAT</td><td>500 DNX</td><td style="color:green">SCELLÉ</td></tr>
+            </tbody>
         </table>
     </div>
 
     <div class="security-logs" id="runes"></div>
 
     <div style="text-align: center; margin-top: 20px;">
-        <button class="btn-action">FORGER UN ORDRE (DNX)</button>
+        <button class="btn-action" onclick="forgeRitual()">FORGER UN ORDRE (DNX)</button>
     </div>
 
     <div class="valid-stamp">NETWORK SECURED</div>
 </div>
 
 <script>
-    const runes = document.getElementById('runes');
-    setInterval(() => {
-        const line = Array.from({length:40}, () => "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ"[Math.floor(Math.random()*24)]).join('');
+    const logContainer = document.getElementById('runes');
+    const marketScroll = document.getElementById('market-scroll');
+    const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
+
+    function playSound(freq, dur) {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            g.gain.setValueAtTime(0.05, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+            osc.connect(g); g.connect(ctx.destination);
+            osc.start(); osc.stop(ctx.currentTime + dur);
+        } catch(e) {}
+    }
+
+    function addLog(text = null, isAlert = false) {
+        let line = text || Array.from({length:40}, () => decorativeRunes[Math.floor(Math.random()*24)]).join('');
         const div = document.createElement('div');
         div.textContent = line;
-        runes.appendChild(div);
-        if(runes.childNodes.length > 3) runes.removeChild(runes.firstChild);
-    }, 1500);
+        if (isAlert) div.style.color = "#ff4444";
+        logContainer.appendChild(div);
+        if (logContainer.childNodes.length > 3) logContainer.removeChild(logContainer.firstChild);
+    }
+
+    function forgeRitual() {
+        // Déclenche l'animation de vibration
+        marketScroll.classList.add('forge-ritual');
+        playSound(150, 0.6); // Son de forge sourd
+        
+        addLog("ᚠ—SIGNATURE_DR_NUMBI_REQUISE—ᚠ", true);
+
+        setTimeout(() => {
+            marketScroll.classList.remove('forge-ritual');
+            alert('ALERTE SÉCURITÉ : ACCÈS REQUIS : SIGNATURE NUMÉRIQUE DU DR NUMBI (V2.3)');
+        }, 800);
+    }
+
+    setInterval(() => addLog(), 2000);
 </script>
 </body>
 </html>
