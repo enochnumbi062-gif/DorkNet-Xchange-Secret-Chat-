@@ -1,40 +1,37 @@
 import streamlit as st
 import streamlit.components.v1 as components
+import random
 
-# 1. Configuration de l'environnement DorkNet
-st.set_page_config(
-    page_title="DorkNet Xchange",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
+st.set_page_config(page_title="DorkNet Xchange | Network", layout="wide", initial_sidebar_state="collapsed")
 
-# 2. Nettoyage de l'interface Streamlit (Invisibilité OPSEC)
-st.markdown("""
-    <style>
-        .reportview-container .main .block-container{ padding: 0rem; }
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        #MainMenu {visibility: hidden;}
-        div.stButton > button:first-child { display: none; }
-        [data-testid="stHeader"] {display: none;}
-    </style>
-""", unsafe_allow_html=True)
+# --- SIMULATION DE FLUX DE MARCHÉ (Dr Numbi Engine) ---
+def get_market_data():
+    # Ici, on pourrait utiliser une API comme CoinGecko
+    return {
+        "dnx_price": round(random.uniform(1.20, 1.45), 2),
+        "dnx_change": round(random.uniform(5.0, 15.0), 1),
+        "btc_price": "{:,}".format(random.randint(64000, 67000)),
+    }
 
-# 3. Logique de routage des pages
-# Récupère le paramètre 'p' dans l'URL (ex: ?p=market)
-query_params = st.query_params
-current_page = query_params.get("p", "chat") # 'chat' est la page par défaut
-
-def serve_dorknet_page(file_name):
+def serve_dorknet_page(file_path):
     try:
-        with open(file_name, "r", encoding="utf-8") as f:
-            html_code = f.read()
-        # Injection du composant HTML
-        components.html(html_code, height=1200, scrolling=True)
+        with open(file_path, "r", encoding="utf-8") as f:
+            html_content = f.read()
+        
+        # --- AUTOMATISATION : Injection des variables ---
+        data = get_market_data()
+        html_content = html_content.replace("$1.24", f"${data['dnx_price']}")
+        html_content = html_content.replace("+ 12.5%", f"+ {data['dnx_change']}%")
+        html_content = html_content.replace("$65,432", f"${data['btc_price']}")
+        
+        components.html(html_content, height=1300, scrolling=True)
     except FileNotFoundError:
-        st.error(f"ERREUR CRITIQUE : Le parchemin '{file_name}' est introuvable sur le serveur.")
+        st.error(f"Fichier '{file_path}' introuvable.")
 
-# 4. Exécution du déploiement
+# --- ROUTAGE ---
+query_params = st.query_params
+current_page = query_params.get("p", "chat")
+
 if current_page == "market":
     serve_dorknet_page("market.html")
 else:
