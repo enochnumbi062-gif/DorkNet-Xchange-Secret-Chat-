@@ -26,7 +26,6 @@
             overflow: hidden;
         }
 
-        /* Le Parchemin Principal */
         #terminal {
             width: 900px;
             height: 1250px; 
@@ -67,18 +66,15 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* Conteneur du crâne avec effet de lueur */
         .skull-container {
             text-align: center;
             margin-bottom: 15px;
             padding: 10px;
-            position: relative;
         }
 
         .skull-icon {
             width: 80px;
             height: auto;
-            /* Lueur Cyan pulsante */
             filter: drop-shadow(0 0 8px var(--rune-color));
             animation: pulse-glow 3s infinite ease-in-out;
         }
@@ -145,18 +141,6 @@
             bottom: 0;
         }
 
-        .valid-stamp {
-            color: #2d5a27;
-            border: 2px solid #2d5a27;
-            display: inline-block;
-            padding: 5px;
-            font-weight: bold;
-            transform: rotate(-15deg);
-            position: absolute;
-            right: 20px;
-            bottom: 20px;
-        }
-
         .vault-btn {
             width: 100%; 
             background: none; 
@@ -173,6 +157,44 @@
             color: var(--bg-color);
             box-shadow: 0 0 10px var(--accent-glow);
         }
+
+        /* Styles de la Modale OPSEC */
+        #opsecModal {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 70%;
+            background: var(--bg-color);
+            border: 3px double var(--ink-color);
+            box-shadow: 0 0 100px rgba(0,0,0,0.8);
+            z-index: 100;
+            padding: 30px;
+            overflow-y: auto;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+        }
+
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-weight: bold;
+            border: 1px solid var(--ink-color);
+            padding: 5px 10px;
+        }
+
+        .valid-stamp {
+            color: #2d5a27;
+            border: 2px solid #2d5a27;
+            display: inline-block;
+            padding: 5px;
+            font-weight: bold;
+            transform: rotate(-15deg);
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -188,16 +210,14 @@
             <div class="skull-container">
                 <img src="https://img.icons8.com/ios-filled/100/008b8b/skull.png" alt="Skull" class="skull-icon">
                 <div style="font-size: 0.8rem; margin-top: 8px; color: var(--rune-color);">CORE: ACTIVE</div>
-                <div style="font-size: 0.8rem;">MEM: STABLE</div>
             </div>
             
             <div style="border-top: 1px solid var(--ink-color); margin-top: 15px; padding-top: 10px; text-align: left;">
                 <h4 style="font-family: 'UnifrakturMaguntia'; text-align: center; margin: 5px 0;">Asset Vault</h4>
                 <p style="font-size: 0.8rem; margin: 5px 0;">ACTIF: <span style="color: var(--rune-color);">DNX_TOKEN</span></p>
                 <p style="font-size: 0.8rem; margin: 5px 0;">SOLDE: <span id="balance">1,000,000</span> DNX</p>
-                <button class="vault-btn" onclick="mintToken()">
-                    EXECUTE INCANTATION
-                </button>
+                <button class="vault-btn" onclick="mintToken()">EXECUTE INCANTATION</button>
+                <button class="vault-btn" style="margin-top: 15px; border-color: #8b0000; color: #8b0000;" onclick="toggleOpsec()">PROTOCOLE OPSEC</button>
             </div>
         </section>
 
@@ -208,15 +228,12 @@
                 <polygon points="50,5 90,75 10,75" fill="none" stroke="black" stroke-width="0.5"/>
                 <polygon points="50,95 10,25 90,25" fill="none" stroke="black" stroke-width="0.5"/>
             </svg>
-            <div class="price-display">
-                BTC/USD<br>
-                <span style="font-size: 1.5rem;">$65,432.10</span>
-            </div>
+            <div class="price-display">BTC/USD<br><span style="font-size: 1.5rem;">$65,432.10</span></div>
         </section>
 
         <section class="messenger-box">
             <h3>ABYSSAL MESSENGER</h3>
-            <textarea id="messageInput" placeholder="Écrivez votre message secret pour le Secret Chat..."></textarea>
+            <textarea id="messageInput" placeholder="Écrivez votre message secret..."></textarea>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div id="statusMsg" style="font-size: 0.7rem; color: #666;">DORKNET_SECRET_PROTOCOL_V2.2</div>
                 <div style="display: flex; gap: 10px;">
@@ -231,6 +248,16 @@
         </section>
     </div>
 
+    <div id="opsecModal">
+        <span class="close-btn" onclick="toggleOpsec()">FERMER [X]</span>
+        <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center; border-bottom: 2px solid black;">Manuel OPSEC V2.2</h2>
+        <p><strong>1. SIGNAUX :</strong> Le Crâne pulsant confirme la surveillance du Dr Numbi.</p>
+        <p><strong>2. CHIFFREMENT :</strong> Protocole Polyalphabétique Dynamique actif. La position de la lettre modifie sa rune.</p>
+        <p><strong>3. PURGE :</strong> L'auto-destruction (10s) est irréversible. Aucune trace ne subsiste.</p>
+        <p><strong>4. DISCIPLINE :</strong> Ne jamais copier-coller en dehors du terminal scellé.</p>
+        <p style="text-align: center; font-style: italic; margin-top: 40px;">"Le secret est notre seule monnaie."</p>
+    </div>
+
     <div class="valid-stamp">TXID: 0x487A... VALIDATED</div>
 </div>
 
@@ -240,67 +267,51 @@
     const logContainer = document.getElementById('runes');
     const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
 
+    function toggleOpsec() {
+        const m = document.getElementById('opsecModal');
+        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+        addLog("ᚠ—ACCÈS_MANUEL_OPSEC—ᚠ", true);
+    }
+
     function addLog(customText = null, isAlert = false) {
-        let line = "";
-        if (customText) {
-            line = customText;
-        } else {
-            for(let i=0; i<55; i++) {
-                line += decorativeRunes[Math.floor(Math.random() * decorativeRunes.length)];
-            }
-        }
+        let line = customText || Array.from({length:55}, () => decorativeRunes[Math.floor(Math.random()*decorativeRunes.length)]).join('');
         const div = document.createElement('div');
         div.textContent = line;
         if (isAlert) div.style.color = "red";
         logContainer.appendChild(div);
-        if (logContainer.childNodes.length > 7) {
-            logContainer.removeChild(logContainer.firstChild);
-        }
+        if (logContainer.childNodes.length > 7) logContainer.removeChild(logContainer.firstChild);
     }
 
     let currentBalance = 1000000;
     function mintToken() {
         currentBalance += 100;
         document.getElementById('balance').textContent = currentBalance.toLocaleString();
-        addLog("ᛗᛁ—SECRET_VAULT_INCANTATION_OK—ᛗᛁ", true);
+        addLog("ᛗᛁ—INCANTATION_TOKEN_RÉUSSIE—ᛗᛁ", true);
     }
 
     function sealMessage() {
         const input = document.getElementById('messageInput').value.toUpperCase();
         let output = "";
         for (let i = 0; i < input.length; i++) {
-            let char = input[i];
-            let index = latinAlphabet.indexOf(char);
-            if (index !== -1) {
-                let dynamicIndex = (index + i) % dorknetKey.length;
-                output += dorknetKey[dynamicIndex];
-            } else {
-                output += char;
-            }
+            let index = latinAlphabet.indexOf(input[i]);
+            output += (index !== -1) ? dorknetKey[(index + i) % dorknetKey.length] : input[i];
         }
         document.getElementById('messageInput').value = output;
-        addLog("ᚠ—V2.2_POLY_SEAL_SUCCESS—ᚠ", true);
+        addLog("ᚠ—V2.2_SEAL_COMPLETED—ᚠ", true);
     }
 
     function unsealMessage() {
         const input = document.getElementById('messageInput').value;
         let output = "";
         for (let i = 0; i < input.length; i++) {
-            let char = input[i];
-            let index = dorknetKey.indexOf(char);
-            if (index !== -1) {
-                let originalIndex = (index - i % dorknetKey.length + dorknetKey.length) % dorknetKey.length;
-                output += latinAlphabet[originalIndex] || "?";
-            } else {
-                output += char;
-            }
+            let index = dorknetKey.indexOf(input[i]);
+            output += (index !== -1) ? latinAlphabet[(index - i % dorknetKey.length + dorknetKey.length) % dorknetKey.length] : input[i];
         }
         document.getElementById('messageInput').value = output;
-        addLog("ᚠ—V2.2_ABYSSAL_UNSEAL_OK—ᚠ", true);
+        addLog("ᚠ—V2.2_UNSEAL_COMPLETED—ᚠ", true);
 
         document.getElementById('statusMsg').textContent = "AUTO-DESTRUCTION DANS 10S...";
         document.getElementById('statusMsg').style.color = "red";
-        
         setTimeout(() => {
             document.getElementById('messageInput').value = "";
             document.getElementById('statusMsg').textContent = "MESSAGE DÉTRUIT.";
@@ -314,6 +325,5 @@
 
     setInterval(addLog, 1200);
 </script>
-
 </body>
 </html>
