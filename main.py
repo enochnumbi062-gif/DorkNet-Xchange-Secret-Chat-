@@ -1,36 +1,41 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# Configuration de la page DorkNet
-st.set_page_config(page_title="DorkNet Xchange", layout="wide", initial_sidebar_state="collapsed")
+# 1. Configuration de l'environnement DorkNet
+st.set_page_config(
+    page_title="DorkNet Xchange",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
-# Suppression des marges Streamlit pour un look full-screen
+# 2. Nettoyage de l'interface Streamlit (Invisibilité OPSEC)
 st.markdown("""
     <style>
-        .reportview-container .main .block-container{ padding-top: 0rem; }
+        .reportview-container .main .block-container{ padding: 0rem; }
         footer {visibility: hidden;}
         header {visibility: hidden;}
         #MainMenu {visibility: hidden;}
+        div.stButton > button:first-child { display: none; }
+        [data-testid="stHeader"] {display: none;}
     </style>
 """, unsafe_allow_html=True)
 
-# Gestion de la Navigation via l'URL ou l'état de la session
+# 3. Logique de routage des pages
+# Récupère le paramètre 'p' dans l'URL (ex: ?p=market)
 query_params = st.query_params
-page = query_params.get("p", "chat")
+current_page = query_params.get("p", "chat") # 'chat' est la page par défaut
 
-def load_html(file_name):
+def serve_dorknet_page(file_name):
     try:
         with open(file_name, "r", encoding="utf-8") as f:
-            return f.read()
+            html_code = f.read()
+        # Injection du composant HTML
+        components.html(html_code, height=1200, scrolling=True)
     except FileNotFoundError:
-        return f"<h2>ERREUR : Fichier {file_name} introuvable dans le dépôt.</h2>"
+        st.error(f"ERREUR CRITIQUE : Le parchemin '{file_name}' est introuvable sur le serveur.")
 
-# AFFICHAGE LOGIQUE
-if page == "market":
-    content = load_html("market.html")
-    # Hauteur ajustée pour le parchemin du marché
-    components.html(content, height=1000, scrolling=True)
+# 4. Exécution du déploiement
+if current_page == "market":
+    serve_dorknet_page("market.html")
 else:
-    content = load_html("index.html")
-    # Hauteur ajustée pour le terminal de chat
-    components.html(content, height=1000, scrolling=True)
+    serve_dorknet_page("index.html")
