@@ -10,7 +10,7 @@
         :root {
             --bg-color: #f4ece1;
             --ink-color: #2b2621;
-            --accent-glow: rgba(0, 255, 255, 0.4);
+            --accent-glow: rgba(0, 255, 255, 0.6);
             --rune-color: #008b8b;
         }
 
@@ -67,12 +67,26 @@
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
 
-        .skull-viz {
-            font-size: 10px;
-            line-height: 8px;
-            white-space: pre;
-            margin-bottom: 15px;
+        /* Conteneur du crâne avec effet de lueur */
+        .skull-container {
             text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            position: relative;
+        }
+
+        .skull-icon {
+            width: 80px;
+            height: auto;
+            /* Lueur Cyan pulsante */
+            filter: drop-shadow(0 0 8px var(--rune-color));
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0% { filter: drop-shadow(0 0 5px var(--rune-color)); opacity: 0.8; }
+            50% { filter: drop-shadow(0 0 15px var(--rune-color)); opacity: 1; }
+            100% { filter: drop-shadow(0 0 5px var(--rune-color)); opacity: 0.8; }
         }
 
         .market-seal {
@@ -157,6 +171,7 @@
         .vault-btn:hover {
             background-color: var(--ink-color);
             color: var(--bg-color);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
     </style>
 </head>
@@ -170,15 +185,10 @@
     <div class="main-layout">
         <section class="system-status">
             <h3>SYSTEM STATUS</h3>
-            <div class="skull-viz">
-      _______
-   /         \
-  /   O   O   \
- |     _     |
-  \  \___/  /
-   \_______/
-   CPU LOAD: 85%
-   MEM: STABLE
+            <div class="skull-container">
+                <img src="https://img.icons8.com/ios-filled/100/008b8b/skull.png" alt="Skull" class="skull-icon">
+                <div style="font-size: 0.8rem; margin-top: 8px; color: var(--rune-color);">CORE: ACTIVE</div>
+                <div style="font-size: 0.8rem;">MEM: STABLE</div>
             </div>
             
             <div style="border-top: 1px solid var(--ink-color); margin-top: 15px; padding-top: 10px; text-align: left;">
@@ -208,7 +218,7 @@
             <h3>ABYSSAL MESSENGER</h3>
             <textarea id="messageInput" placeholder="Écrivez votre message secret pour le Secret Chat..."></textarea>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div id="statusMsg" style="font-size: 0.7rem; color: #666;">DORKNET_SECRET_PROTOCOL_V1</div>
+                <div id="statusMsg" style="font-size: 0.7rem; color: #666;">DORKNET_SECRET_PROTOCOL_V2.2</div>
                 <div style="display: flex; gap: 10px;">
                     <button class="vault-btn" style="width: 120px;" onclick="sealMessage()">SCELLER</button>
                     <button class="vault-btn" style="width: 120px;" onclick="unsealMessage()">OUVRIR</button>
@@ -225,12 +235,10 @@
 </div>
 
 <script>
-    // --- CONFIGURATION CRYPTOGRAPHIQUE ---
     const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
     const dorknetKey    = "ᛗᚠᛃᚾᛈᚢᛊᚦᛏᚨᛒᚱᛖᚲᛚᚷᛜᚹᛞᚺᛟᛝᚥᚧᛁᛉᛇ123456789 "; 
-    
-    const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
     const logContainer = document.getElementById('runes');
+    const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
 
     function addLog(customText = null, isAlert = false) {
         let line = "";
@@ -254,48 +262,51 @@
     function mintToken() {
         currentBalance += 100;
         document.getElementById('balance').textContent = currentBalance.toLocaleString();
-        addLog("ᛗᛁ—SECRET_VAULT_MINT_SUCCESS—ᛗᛁ", true);
+        addLog("ᛗᛁ—SECRET_VAULT_INCANTATION_OK—ᛗᛁ", true);
     }
 
     function sealMessage() {
         const input = document.getElementById('messageInput').value.toUpperCase();
         let output = "";
-        for (let char of input) {
+        for (let i = 0; i < input.length; i++) {
+            let char = input[i];
             let index = latinAlphabet.indexOf(char);
             if (index !== -1) {
-                output += dorknetKey[index];
+                let dynamicIndex = (index + i) % dorknetKey.length;
+                output += dorknetKey[dynamicIndex];
             } else {
                 output += char;
             }
         }
         document.getElementById('messageInput').value = output;
-        addLog("ᚠ—SECRET_CHAT_MESSAGE_SCELLÉ—ᚠ", true);
+        addLog("ᚠ—V2.2_POLY_SEAL_SUCCESS—ᚠ", true);
     }
 
     function unsealMessage() {
         const input = document.getElementById('messageInput').value;
         let output = "";
-        for (let char of input) {
+        for (let i = 0; i < input.length; i++) {
+            let char = input[i];
             let index = dorknetKey.indexOf(char);
             if (index !== -1) {
-                output += latinAlphabet[index];
+                let originalIndex = (index - i % dorknetKey.length + dorknetKey.length) % dorknetKey.length;
+                output += latinAlphabet[originalIndex] || "?";
             } else {
                 output += char;
             }
         }
         document.getElementById('messageInput').value = output;
-        addLog("ᚠ—SECRET_CHAT_DÉCRYPTAGE_OK—ᚠ", true);
+        addLog("ᚠ—V2.2_ABYSSAL_UNSEAL_OK—ᚠ", true);
 
-        // AUTO-DESTRUCTION APRÈS 10 SECONDES
         document.getElementById('statusMsg').textContent = "AUTO-DESTRUCTION DANS 10S...";
         document.getElementById('statusMsg').style.color = "red";
         
         setTimeout(() => {
             document.getElementById('messageInput').value = "";
             document.getElementById('statusMsg').textContent = "MESSAGE DÉTRUIT.";
-            addLog("ᛟ—MESSAGE_AUTO_DÉTRUIT—ᛟ", true);
+            addLog("ᛟ—OPSEC_PURGE_COMPLETE—ᛟ", true);
             setTimeout(() => {
-                document.getElementById('statusMsg').textContent = "DORKNET_SECRET_PROTOCOL_V1";
+                document.getElementById('statusMsg').textContent = "DORKNET_SECRET_PROTOCOL_V2.2";
                 document.getElementById('statusMsg').style.color = "#666";
             }, 2000);
         }, 10000);
