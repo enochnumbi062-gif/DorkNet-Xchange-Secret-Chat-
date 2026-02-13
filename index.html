@@ -298,9 +298,31 @@
     const logContainer = document.getElementById('runes');
     const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
 
+    // --- MOTEUR AUDIO ---
+    function playBeep(frequency = 800, duration = 0.1) {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = 'square'; 
+            oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + duration);
+        } catch(e) { console.log("Audio bloqué par le navigateur"); }
+    }
+
     function toggleOpsec() {
         const m = document.getElementById('opsecModal');
         m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+        playBeep(600, 0.1);
         addLog("ᚠ—ACCÈS_MANUEL_OPSEC—ᚠ", true);
     }
 
@@ -317,14 +339,16 @@
     function mintToken() {
         currentBalance += 100;
         document.getElementById('balance').textContent = currentBalance.toLocaleString();
+        playBeep(1200, 0.05);
         addLog("ᛗᛁ—INCANTATION_TOKEN_RÉUSSIE—ᛗᛁ", true);
     }
 
-    // --- FUSION : SCELLAGE ET EXFILTRATION VERS LE VAULT ---
     function sealMessage() {
         const input = document.getElementById('messageInput').value.toUpperCase();
         if (!input) return;
 
+        playBeep(400, 0.3); // Son grave de scellage
+        
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = latinAlphabet.indexOf(input[i]);
@@ -334,8 +358,7 @@
         document.getElementById('messageInput').value = output;
         addLog("ᚠ—V2.2_SEAL_COMPLETED—ᚠ", true);
 
-        // ENVOI AU VAULT SECRET (app.py)
-        // Utilisation de window.parent pour sortir de l'Iframe Streamlit
+        // EXFILTRATION VERS LE VAULT (app.py)
         const secureUrl = `./?p=chat&msg=${encodeURIComponent(output)}`;
         setTimeout(() => {
             window.parent.location.href = secureUrl;
@@ -345,6 +368,8 @@
     function unsealMessage() {
         const input = document.getElementById('messageInput').value;
         if (!input) return;
+
+        playBeep(1000, 0.2); // Son aigu d'ouverture
         
         let output = "";
         for (let i = 0; i < input.length; i++) {
@@ -359,6 +384,7 @@
         setTimeout(() => {
             document.getElementById('messageInput').value = "";
             document.getElementById('statusMsg').textContent = "MESSAGE DÉTRUIT.";
+            playBeep(200, 0.5); // Son de purge
             addLog("ᛟ—OPSEC_PURGE_COMPLETE—ᛟ", true);
             setTimeout(() => {
                 document.getElementById('statusMsg').textContent = "DORKNET_SECRET_PROTOCOL_V2.2";
