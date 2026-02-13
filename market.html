@@ -29,6 +29,30 @@
             background-image: url('https://www.transparenttextures.com/patterns/paper.png');
             transform: scale(0.65); 
             position: relative;
+            z-index: 1;
+        }
+
+        /* --- FILIGRANE DU SCEAU DR NUMBI --- */
+        .official-seal-bg {
+            position: absolute;
+            top: 55%; /* Légèrement plus bas pour ne pas gêner les stats */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 450px;
+            height: 450px;
+            background-image: url('https://r.jina.ai/i/669d0346067b420f92f2549219d20f01');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.08;
+            z-index: -1;
+            pointer-events: none;
+            animation: seal-pulse 8s infinite ease-in-out;
+        }
+
+        @keyframes seal-pulse {
+            0% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.12; transform: translate(-50%, -50%) scale(1.05); }
+            100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
         }
 
         /* --- NAVIGATION --- */
@@ -67,6 +91,7 @@
         .status-header {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 20px; border: 1px dashed var(--ink-color); padding: 10px;
+            background: rgba(255,255,255,0.3);
         }
 
         .skull-icon {
@@ -87,22 +112,17 @@
 
         .stat-card {
             border: 1px solid var(--ink-color); padding: 10px; text-align: center;
-            background: rgba(0,0,0,0.03);
+            background: rgba(255,255,255,0.5);
+            backdrop-filter: blur(1px);
         }
 
         .price-up { color: #2d5a27; font-weight: bold; }
         
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(-10px); background: rgba(0, 139, 139, 0.2); }
-            to { opacity: 1; transform: translateY(0); background: transparent; }
-        }
-
-        .new-row { animation: fade-in 1s forwards; }
-
         .trade-zone {
             border: 2px solid var(--ink-color); padding: 20px; margin-top: 20px;
-            position: relative; background: rgba(0,139,139,0.02);
+            position: relative; background: rgba(255,255,255,0.3);
             min-height: 300px;
+            backdrop-filter: blur(1px);
         }
 
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
@@ -141,6 +161,8 @@
 <body>
 
 <div id="market-scroll">
+    <div class="official-seal-bg"></div>
+
     <div class="nav-hub">
         <nav>
             <a href="./?p=chat" target="_self" class="nav-link">[ ABYSSAL CHAT ]</a>
@@ -224,28 +246,22 @@
     const tableBody = document.getElementById('order-book-body');
     const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
 
-    // --- MOTEUR AUDIO MARKET ---
     function playMarketBeep() {
         try {
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
-
-            oscillator.type = 'sine'; // Son pur pour le marché
+            oscillator.type = 'sine';
             oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime);
-            
             gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
-
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
-
             oscillator.start();
             oscillator.stop(audioCtx.currentTime + 0.05);
-        } catch(e) { console.log("Audio bloqué"); }
+        } catch(e) {}
     }
 
-    // --- SYSTÈME DE LOGS ---
     function addLog(customText = null, isAlert = false) {
         let line = customText || Array.from({length:50}, () => decorativeRunes[Math.floor(Math.random()*decorativeRunes.length)]).join('');
         const div = document.createElement('div');
@@ -255,43 +271,28 @@
         if (logContainer.childNodes.length > 4) logContainer.removeChild(logContainer.firstChild);
     }
 
-    // --- GÉNÉRATEUR D'ORDRES ALÉATOIRES ---
     function generateGhostOrder() {
-        playMarketBeep(); // Signal sonore de transaction
-        
+        playMarketBeep();
         const types = ["ACHAT", "VENTE", "TRANSFERT"];
         const type = types[Math.floor(Math.random() * types.length)];
         const amount = (Math.random() * 2500 + 50).toFixed(0) + " DNX";
         const txid = "0x" + Math.random().toString(16).slice(2, 5).toUpperCase() + "..." + Math.random().toString(16).slice(2, 4).toUpperCase();
         
         const row = document.createElement("tr");
-        row.className = "new-row";
-        row.innerHTML = `
-            <td>${type}</td>
-            <td>${amount}</td>
-            <td>${txid}</td>
-            <td class="price-up">SCELLÉ</td>
-        `;
-
+        row.innerHTML = `<td>${type}</td><td>${amount}</td><td>${txid}</td><td class="price-up">SCELLÉ</td>`;
         tableBody.prepend(row);
-        
-        if (tableBody.rows.length > 6) {
-            tableBody.deleteRow(tableBody.rows.length - 1);
-        }
-
+        if (tableBody.rows.length > 6) tableBody.deleteRow(tableBody.rows.length - 1);
         addLog(`ᚠ—FLUX_${type}_SCELLÉ—ᚠ`, true);
     }
 
     function forgeOrder() {
-        playMarketBeep(); // Bip de feedback
+        playMarketBeep();
         addLog("ᚠ—SIGNATURE_DR_NUMBI_REQUISE—ᚠ", true);
         alert('ACCÈS REQUIS : SIGNATURE NUMÉRIQUE DU DR NUMBI (V2.3)');
     }
 
-    // Initialisation
     setInterval(addLog, 2000);
     setInterval(generateGhostOrder, 12000); 
 </script>
-
 </body>
 </html>
