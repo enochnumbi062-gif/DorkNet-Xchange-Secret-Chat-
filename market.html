@@ -32,27 +32,28 @@
             z-index: 1;
         }
 
-        /* --- FILIGRANE DU SCEAU DR NUMBI --- */
+        /* --- FILIGRANE DU SCEAU DR NUMBI (URL CORRIGÉE) --- */
         .official-seal-bg {
             position: absolute;
-            top: 55%; /* Légèrement plus bas pour ne pas gêner les stats */
+            top: 55%; 
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 450px;
-            height: 450px;
-            background-image: url('https://r.jina.ai/i/669d0346067b420f92f2549219d20f01');
+            width: 550px;
+            height: 550px;
+            /* URL permanente du sceau */
+            background-image: url('https://i.ibb.co/v6m4V5S/dorknet-seal.png');
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.08;
+            opacity: 0.15; /* Visibilité renforcée */
             z-index: -1;
             pointer-events: none;
             animation: seal-pulse 8s infinite ease-in-out;
         }
 
         @keyframes seal-pulse {
-            0% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.12; transform: translate(-50%, -50%) scale(1.05); }
-            100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+            0% { opacity: 0.10; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.22; transform: translate(-50%, -50%) scale(1.04); }
+            100% { opacity: 0.10; transform: translate(-50%, -50%) scale(1); }
         }
 
         /* --- NAVIGATION --- */
@@ -112,7 +113,8 @@
 
         .stat-card {
             border: 1px solid var(--ink-color); padding: 10px; text-align: center;
-            background: rgba(255,255,255,0.5);
+            /* Fond semi-transparent pour laisser passer le sceau */
+            background: rgba(255,255,255,0.45);
             backdrop-filter: blur(1px);
         }
 
@@ -120,7 +122,8 @@
         
         .trade-zone {
             border: 2px solid var(--ink-color); padding: 20px; margin-top: 20px;
-            position: relative; background: rgba(255,255,255,0.3);
+            position: relative; 
+            background: rgba(255,255,255,0.35);
             min-height: 300px;
             backdrop-filter: blur(1px);
         }
