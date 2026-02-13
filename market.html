@@ -9,7 +9,6 @@
         :root {
             --bg-color: #f4ece1;
             --ink-color: #2b2621;
-            --accent-glow: rgba(0, 139, 139, 0.5);
             --rune-color: #008b8b;
         }
 
@@ -32,133 +31,52 @@
             z-index: 1;
         }
 
-        /* --- FILIGRANE DU SCEAU DR NUMBI (URL CORRIGÉE) --- */
+        /* --- FILIGRANE DU SCEAU DR NUMBI (VERSION SÉCURISÉE) --- */
         .official-seal-bg {
             position: absolute;
-            top: 55%; 
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 550px;
-            height: 550px;
-            /* URL permanente du sceau */
-            background-image: url('https://i.ibb.co/v6m4V5S/dorknet-seal.png');
+            width: 500px;
+            height: 500px;
+            /* J'utilise ici un SVG intégré pour garantir qu'il ne disparaisse jamais */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='48' fill='none' stroke='%23008b8b' stroke-width='0.5' stroke-dasharray='2' opacity='0.3'/%3e%3ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='8' fill='%23008b8b' opacity='0.3'%3eDR. NUMBI OFFICIAL SEAL%3c/text%3e%3cpath d='M50 10 L90 80 L10 80 Z' fill='none' stroke='%23008b8b' stroke-width='0.2' opacity='0.2'/%3e%3c/svg%3e");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.15; /* Visibilité renforcée */
+            opacity: 0.2;
             z-index: -1;
             pointer-events: none;
-            animation: seal-pulse 8s infinite ease-in-out;
+            animation: seal-pulse 6s infinite ease-in-out;
         }
 
         @keyframes seal-pulse {
-            0% { opacity: 0.10; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.22; transform: translate(-50%, -50%) scale(1.04); }
-            100% { opacity: 0.10; transform: translate(-50%, -50%) scale(1); }
+            0% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.05); }
+            100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
         }
 
         /* --- NAVIGATION --- */
-        .nav-hub {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            padding-bottom: 15px;
-        }
+        .nav-hub { text-align: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .nav-link { color: var(--ink-color); text-decoration: none; font-weight: bold; margin: 0 15px; font-size: 0.9rem; }
         
-        .nav-hub nav {
-            display: inline-block;
-            border: 1px solid var(--ink-color);
-            padding: 10px;
-            background: rgba(0,0,0,0.05);
-        }
+        header h1 { font-family: 'UnifrakturMaguntia', serif; font-size: 3rem; text-align: center; border-bottom: 3px double var(--ink-color); margin: 10px 0 20px 0; }
 
-        .nav-link {
-            color: var(--ink-color);
-            text-decoration: none;
-            font-weight: bold;
-            margin: 0 15px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
+        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border: 1px dashed var(--ink-color); padding: 10px; background: rgba(255,255,255,0.3); }
 
-        .nav-link:hover { color: var(--rune-color); }
+        .skull-icon { width: 50px; filter: drop-shadow(0 0 5px var(--rune-color)); animation: pulse-glow 3s infinite ease-in-out; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
 
-        header h1 {
-            font-family: 'UnifrakturMaguntia', serif;
-            font-size: 3rem; text-align: center; border-bottom: 3px double var(--ink-color);
-            margin-bottom: 20px;
-            margin-top: 10px;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .stat-card { border: 1px solid var(--ink-color); padding: 10px; text-align: center; background: rgba(255,255,255,0.5); backdrop-filter: blur(1px); }
 
-        .status-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; border: 1px dashed var(--ink-color); padding: 10px;
-            background: rgba(255,255,255,0.3);
-        }
-
-        .skull-icon {
-            width: 50px; height: auto;
-            filter: drop-shadow(0 0 5px var(--rune-color));
-            animation: pulse-glow 3s infinite ease-in-out;
-        }
-
-        @keyframes pulse-glow {
-            0% { filter: drop-shadow(0 0 2px var(--rune-color)); opacity: 0.7; }
-            50% { filter: drop-shadow(0 0 10px var(--rune-color)); opacity: 1; }
-            100% { filter: drop-shadow(0 0 2px var(--rune-color)); opacity: 0.7; }
-        }
-
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;
-        }
-
-        .stat-card {
-            border: 1px solid var(--ink-color); padding: 10px; text-align: center;
-            /* Fond semi-transparent pour laisser passer le sceau */
-            background: rgba(255,255,255,0.45);
-            backdrop-filter: blur(1px);
-        }
-
-        .price-up { color: #2d5a27; font-weight: bold; }
-        
-        .trade-zone {
-            border: 2px solid var(--ink-color); padding: 20px; margin-top: 20px;
-            position: relative; 
-            background: rgba(255,255,255,0.35);
-            min-height: 300px;
-            backdrop-filter: blur(1px);
-        }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
+        .trade-zone { border: 2px solid var(--ink-color); padding: 20px; margin-top: 20px; background: rgba(255,255,255,0.2); min-height: 300px; backdrop-filter: blur(2px); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th { border-bottom: 1px solid var(--ink-color); padding: 10px; text-align: left; }
         td { padding: 8px; border-bottom: 1px dashed rgba(0,0,0,0.1); }
 
-        .btn-action {
-            background: var(--ink-color); color: var(--bg-color);
-            border: none; padding: 10px 20px; cursor: pointer;
-            font-family: 'Special Elite'; transition: 0.3s;
-        }
-
-        .btn-action:hover {
-            box-shadow: 0 0 15px var(--rune-color); color: var(--rune-color);
-        }
-
-        .security-logs {
-            background: rgba(0,0,0,0.05);
-            border: 1px dashed var(--ink-color);
-            height: 100px; margin-top: 20px;
-            padding: 10px; font-size: 0.9rem;
-            color: var(--rune-color); overflow: hidden;
-            position: relative;
-        }
-
-        .rune-stream { position: absolute; bottom: 5px; }
-
-        .valid-stamp {
-            color: #2d5a27; border: 2px solid #2d5a27;
-            display: inline-block; padding: 5px; font-weight: bold;
-            transform: rotate(-10deg); position: absolute;
-            right: 20px; bottom: 10px; opacity: 0.8;
-        }
+        .btn-action { background: var(--ink-color); color: var(--bg-color); border: none; padding: 12px 25px; cursor: pointer; font-family: 'Special Elite'; }
+        .security-logs { background: rgba(0,0,0,0.05); border: 1px dashed var(--ink-color); height: 80px; margin-top: 20px; padding: 10px; color: var(--rune-color); overflow: hidden; }
+        .valid-stamp { color: #2d5a27; border: 2px solid #2d5a27; padding: 5px; font-weight: bold; transform: rotate(-10deg); position: absolute; right: 20px; bottom: 10px; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -168,9 +86,9 @@
 
     <div class="nav-hub">
         <nav>
-            <a href="./?p=chat" target="_self" class="nav-link">[ ABYSSAL CHAT ]</a>
+            <a href="#" class="nav-link">[ ABYSSAL CHAT ]</a>
             <span style="color: #008b8b;">|</span>
-            <a href="./?p=market" target="_self" class="nav-link" style="color: #008b8b;">[ ASSET EXCHANGE ]</a>
+            <a href="#" class="nav-link" style="color: #008b8b;">[ ASSET EXCHANGE ]</a>
         </nav>
     </div>
 
@@ -179,123 +97,43 @@
     </header>
 
     <div class="status-header">
-        <div style="font-size: 0.8rem;">
-            ID: DR_NUMBI_MASTER<br>
-            STATUS: <span style="color: var(--rune-color);">ENCRYPTED_FEED_ACTIVE</span>
-        </div>
-        <img src="https://img.icons8.com/ios-filled/100/008b8b/skull.png" alt="Skull" class="skull-icon">
-        <div style="font-size: 0.8rem; text-align: right;">
-            VAULT: STABLE<br>
-            NET: V2.3
-        </div>
+        <div>ID: DR_NUMBI_MASTER<br>STATUS: <span style="color: var(--rune-color);">ACTIVE_FEED</span></div>
+        <img src="https://img.icons8.com/ios-filled/100/008b8b/skull.png" class="skull-icon">
+        <div style="text-align: right;">VAULT: STABLE<br>NET: V2.3</div>
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card">
-            <div>DNX / USD</div>
-            <div class="price-up" style="font-size: 1.5rem;">$1.24</div>
-            <div style="font-size: 0.7rem;">+ 12.5% (24H)</div>
-        </div>
-        <div class="stat-card">
-            <div>BTC / USD</div>
-            <div style="font-size: 1.5rem;">$65,432</div>
-            <div style="font-size: 0.7rem;">STABLE</div>
-        </div>
-        <div class="stat-card">
-            <div>MARKET CAP</div>
-            <div style="font-size: 1.5rem;">1.2M DNX</div>
-            <div style="font-size: 0.7rem;">DECENTRALIZED</div>
-        </div>
+        <div class="stat-card">DNX/USD<br><b style="color:green">$1.57</b></div>
+        <div class="stat-card">BTC/USD<br><b>$68,838</b></div>
+        <div class="stat-card">CAP<br><b>1.2M DNX</b></div>
     </div>
 
     <div class="trade-zone">
         <h3>LIVRE D'ORDRES SCELLÉS</h3>
         <table>
-            <thead>
-                <tr>
-                    <th>TYPE</th>
-                    <th>MONTANT</th>
-                    <th>TXID</th>
-                    <th>STATUT</th>
-                </tr>
-            </thead>
-            <tbody id="order-book-body">
-                <tr>
-                    <td>ACHAT</td>
-                    <td>500 DNX</td>
-                    <td>0x88A...F2</td>
-                    <td class="price-up">SCELLÉ</td>
-                </tr>
-            </tbody>
+            <tr><th>TYPE</th><th>MONTANT</th><th>STATUT</th></tr>
+            <tr><td>ACHAT</td><td>500 DNX</td><td style="color:green">SCELLÉ</td></tr>
         </table>
     </div>
 
-    <div class="security-logs">
-        <div id="runes" class="rune-stream"></div>
-    </div>
+    <div class="security-logs" id="runes"></div>
 
-    <div style="margin-top: 20px; text-align: center;">
-        <button class="btn-action" onclick="forgeOrder()">FORGER UN ORDRE (DNX)</button>
-        <p style="font-size: 0.7rem; margin-top: 10px; color: #666;">
-            TOUTES LES TRANSACTIONS SONT SOUMISES AU PROTOCOLE V2.3
-        </p>
+    <div style="text-align: center; margin-top: 20px;">
+        <button class="btn-action">FORGER UN ORDRE (DNX)</button>
     </div>
 
     <div class="valid-stamp">NETWORK SECURED</div>
 </div>
 
 <script>
-    const logContainer = document.getElementById('runes');
-    const tableBody = document.getElementById('order-book-body');
-    const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
-
-    function playMarketBeep() {
-        try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime);
-            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.05);
-        } catch(e) {}
-    }
-
-    function addLog(customText = null, isAlert = false) {
-        let line = customText || Array.from({length:50}, () => decorativeRunes[Math.floor(Math.random()*decorativeRunes.length)]).join('');
+    const runes = document.getElementById('runes');
+    setInterval(() => {
+        const line = Array.from({length:40}, () => "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ"[Math.floor(Math.random()*24)]).join('');
         const div = document.createElement('div');
         div.textContent = line;
-        if (isAlert) div.style.color = "red";
-        logContainer.appendChild(div);
-        if (logContainer.childNodes.length > 4) logContainer.removeChild(logContainer.firstChild);
-    }
-
-    function generateGhostOrder() {
-        playMarketBeep();
-        const types = ["ACHAT", "VENTE", "TRANSFERT"];
-        const type = types[Math.floor(Math.random() * types.length)];
-        const amount = (Math.random() * 2500 + 50).toFixed(0) + " DNX";
-        const txid = "0x" + Math.random().toString(16).slice(2, 5).toUpperCase() + "..." + Math.random().toString(16).slice(2, 4).toUpperCase();
-        
-        const row = document.createElement("tr");
-        row.innerHTML = `<td>${type}</td><td>${amount}</td><td>${txid}</td><td class="price-up">SCELLÉ</td>`;
-        tableBody.prepend(row);
-        if (tableBody.rows.length > 6) tableBody.deleteRow(tableBody.rows.length - 1);
-        addLog(`ᚠ—FLUX_${type}_SCELLÉ—ᚠ`, true);
-    }
-
-    function forgeOrder() {
-        playMarketBeep();
-        addLog("ᚠ—SIGNATURE_DR_NUMBI_REQUISE—ᚠ", true);
-        alert('ACCÈS REQUIS : SIGNATURE NUMÉRIQUE DU DR NUMBI (V2.3)');
-    }
-
-    setInterval(addLog, 2000);
-    setInterval(generateGhostOrder, 12000); 
+        runes.appendChild(div);
+        if(runes.childNodes.length > 3) runes.removeChild(runes.firstChild);
+    }, 1500);
 </script>
 </body>
 </html>
