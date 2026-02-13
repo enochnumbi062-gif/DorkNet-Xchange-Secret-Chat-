@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="https://img.icons8.com/ios-filled/50/000000/skull.png" type="image/png">
     <title>DorkNet Xchange Secret Chat | Terminal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Special+Elite&display=swap');
@@ -224,6 +225,7 @@
 </div>
 
 <script>
+    // --- CONFIGURATION CRYPTOGRAPHIQUE ---
     const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
     const dorknetKey    = "ᛗᚠᛃᚾᛈᚢᛊᚦᛏᚨᛒᚱᛖᚲᛚᚷᛜᚹᛞᚺᛟᛝᚥᚧᛁᛉᛇ123456789 "; 
     
@@ -284,7 +286,7 @@
         document.getElementById('messageInput').value = output;
         addLog("ᚠ—SECRET_CHAT_DÉCRYPTAGE_OK—ᚠ", true);
 
-        // --- NOUVEAU : AUTO-DESTRUCTION APRÈS 10 SECONDES ---
+        // AUTO-DESTRUCTION APRÈS 10 SECONDES
         document.getElementById('statusMsg').textContent = "AUTO-DESTRUCTION DANS 10S...";
         document.getElementById('statusMsg').style.color = "red";
         
@@ -303,5 +305,4 @@
 </script>
 
 </body>
-  </html>
-  
+</html>
