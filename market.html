@@ -31,7 +31,7 @@
             position: relative;
         }
 
-        /* --- NAVIGATION HUB (STREAMLIT COMPATIBLE) --- */
+        /* --- NAVIGATION --- */
         .nav-hub {
             text-align: center;
             margin-bottom: 30px;
@@ -92,9 +92,18 @@
 
         .price-up { color: #2d5a27; font-weight: bold; }
         
+        /* --- ANIMATION POUR NOUVEAUX ORDRES --- */
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-10px); background: rgba(0, 139, 139, 0.2); }
+            to { opacity: 1; transform: translateY(0); background: transparent; }
+        }
+
+        .new-row { animation: fade-in 1s forwards; }
+
         .trade-zone {
             border: 2px solid var(--ink-color); padding: 20px; margin-top: 20px;
             position: relative; background: rgba(0,139,139,0.02);
+            min-height: 300px;
         }
 
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
@@ -186,7 +195,7 @@
                     <th>STATUT</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="order-book-body">
                 <tr>
                     <td>ACHAT</td>
                     <td>500 DNX</td>
@@ -197,12 +206,6 @@
                     <td>VENTE</td>
                     <td>1,200 DNX</td>
                     <td>0x41B...E9</td>
-                    <td class="price-up">SCELLÉ</td>
-                </tr>
-                <tr>
-                    <td>TRANSFERT</td>
-                    <td>50 DNX</td>
-                    <td>0x92C...A1</td>
                     <td class="price-up">SCELLÉ</td>
                 </tr>
             </tbody>
@@ -225,8 +228,10 @@
 
 <script>
     const logContainer = document.getElementById('runes');
+    const tableBody = document.getElementById('order-book-body');
     const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
 
+    // --- SYSTÈME DE LOGS ---
     function addLog(customText = null, isAlert = false) {
         let line = customText || Array.from({length:50}, () => decorativeRunes[Math.floor(Math.random()*decorativeRunes.length)]).join('');
         const div = document.createElement('div');
@@ -236,12 +241,40 @@
         if (logContainer.childNodes.length > 4) logContainer.removeChild(logContainer.firstChild);
     }
 
+    // --- GÉNÉRATEUR D'ORDRES ALÉATOIRES (AUTOMATISATION) ---
+    function generateGhostOrder() {
+        const types = ["ACHAT", "VENTE", "TRANSFERT"];
+        const type = types[Math.floor(Math.random() * types.length)];
+        const amount = (Math.random() * 2500 + 50).toFixed(0) + " DNX";
+        const txid = "0x" + Math.random().toString(16).slice(2, 5).toUpperCase() + "..." + Math.random().toString(16).slice(2, 4).toUpperCase();
+        
+        const row = document.createElement("tr");
+        row.className = "new-row";
+        row.innerHTML = `
+            <td>${type}</td>
+            <td>${amount}</td>
+            <td>${txid}</td>
+            <td class="price-up">SCELLÉ</td>
+        `;
+
+        tableBody.prepend(row);
+        
+        // Limiter à 6 lignes pour ne pas déborder du parchemin
+        if (tableBody.rows.length > 6) {
+            tableBody.deleteRow(tableBody.rows.length - 1);
+        }
+
+        addLog(`ᚠ—FLUX_${type}_SCELLÉ—ᚠ`, true);
+    }
+
     function forgeOrder() {
         addLog("ᚠ—SIGNATURE_DR_NUMBI_REQUISE—ᚠ", true);
         alert('ACCÈS REQUIS : SIGNATURE NUMÉRIQUE DU DR NUMBI (V2.3)');
     }
 
+    // Initialisation des cycles
     setInterval(addLog, 2000);
+    setInterval(generateGhostOrder, 12000); // Un nouvel ordre toutes les 12 secondes
 </script>
 
 </body>
