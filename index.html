@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>DorkNet Xchange Secret Chat | Terminal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Special+Elite&display=swap');
+
+        :root {
+            --bg-color: #f4ece1;
+            --ink-color: #2b2621;
+            --accent-glow: rgba(0, 255, 255, 0.4);
+            --rune-color: #008b8b;
+        }
+
+        body {
+            background-color: #1a1a1a;
+            color: var(--ink-color);
+            font-family: 'Special Elite', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Le Parchemin Principal */
+        #terminal {
+            width: 900px;
+            height: 1250px; 
+            background: var(--bg-color);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.2), 0 0 50px rgba(0,0,0,0.5);
+            padding: 40px;
+            border: 2px solid #dcd1c1;
+            position: relative;
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+            transform: scale(0.65); 
+        }
+
+        header h1 {
+            font-family: 'UnifrakturMaguntia', serif;
+            font-size: 3.5rem; 
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--ink-color);
+            padding-bottom: 10px;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        section {
+            border: 1px solid var(--ink-color);
+            padding: 15px;
+            background: rgba(0,0,0,0.02);
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 0;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .skull-viz {
+            font-size: 10px;
+            line-height: 8px;
+            white-space: pre;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .market-seal {
+            position: relative;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+        }
+
+        .seal-svg {
+            width: 100%;
+            height: auto;
+            animation: rotate 60s linear infinite;
+        }
+
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .price-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .messenger-box {
+            grid-column: span 2;
+            margin-top: 10px;
+        }
+
+        textarea {
+            width: 96%;
+            height: 60px;
+            background: rgba(0,0,0,0.05);
+            border: 1px solid var(--ink-color);
+            font-family: 'Special Elite';
+            padding: 10px;
+            resize: none;
+            margin-bottom: 10px;
+        }
+
+        .security-logs {
+            grid-column: span 2;
+            background: rgba(0,0,0,0.05);
+            border: 1px dashed var(--ink-color);
+            height: 150px;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 1.1rem;
+            color: var(--rune-color);
+            overflow-y: hidden;
+            position: relative;
+        }
+
+        .rune-stream {
+            position: absolute;
+            bottom: 0;
+        }
+
+        .valid-stamp {
+            color: #2d5a27;
+            border: 2px solid #2d5a27;
+            display: inline-block;
+            padding: 5px;
+            font-weight: bold;
+            transform: rotate(-15deg);
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+        }
+
+        .vault-btn {
+            width: 100%; 
+            background: none; 
+            border: 1px solid var(--ink-color); 
+            font-family: 'Special Elite'; 
+            cursor: pointer; 
+            padding: 8px;
+            margin-top: 5px;
+            transition: all 0.3s;
+        }
+
+        .vault-btn:hover {
+            background-color: var(--ink-color);
+            color: var(--bg-color);
+        }
+    </style>
+</head>
+<body>
+
+<div id="terminal">
+    <header>
+        <h1>DorkNet Xchange Secret Chat</h1>
+    </header>
+
+    <div class="main-layout">
+        <section class="system-status">
+            <h3>SYSTEM STATUS</h3>
+            <div class="skull-viz">
+      _______
+   /         \
+  /   O   O   \
+ |     _     |
+  \  \___/  /
+   \_______/
+   CPU LOAD: 85%
+   MEM: STABLE
+            </div>
+            
+            <div style="border-top: 1px solid var(--ink-color); margin-top: 15px; padding-top: 10px; text-align: left;">
+                <h4 style="font-family: 'UnifrakturMaguntia'; text-align: center; margin: 5px 0;">Asset Vault</h4>
+                <p style="font-size: 0.8rem; margin: 5px 0;">ACTIF: <span style="color: var(--rune-color);">DNX_TOKEN</span></p>
+                <p style="font-size: 0.8rem; margin: 5px 0;">SOLDE: <span id="balance">1,000,000</span> DNX</p>
+                <button class="vault-btn" onclick="mintToken()">
+                    EXECUTE INCANTATION
+                </button>
+            </div>
+        </section>
+
+        <section class="market-seal">
+            <h3>MARKET AMPSTEM</h3>
+            <svg class="seal-svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="black" stroke-width="0.5"/>
+                <polygon points="50,5 90,75 10,75" fill="none" stroke="black" stroke-width="0.5"/>
+                <polygon points="50,95 10,25 90,25" fill="none" stroke="black" stroke-width="0.5"/>
+            </svg>
+            <div class="price-display">
+                BTC/USD<br>
+                <span style="font-size: 1.5rem;">$65,432.10</span>
+            </div>
+        </section>
+
+        <section class="messenger-box">
+            <h3>ABYSSAL MESSENGER</h3>
+            <textarea id="messageInput" placeholder="Écrivez votre message secret pour le Secret Chat..."></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div id="statusMsg" style="font-size: 0.7rem; color: #666;">DORKNET_SECRET_PROTOCOL_V1</div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="vault-btn" style="width: 120px;" onclick="sealMessage()">SCELLER</button>
+                    <button class="vault-btn" style="width: 120px;" onclick="unsealMessage()">OUVRIR</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="security-logs">
+            <div id="runes" class="rune-stream"></div>
+        </section>
+    </div>
+
+    <div class="valid-stamp">TXID: 0x487A... VALIDATED</div>
+</div>
+
+<script>
+    const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
+    const dorknetKey    = "ᛗᚠᛃᚾᛈᚢᛊᚦᛏᚨᛒᚱᛖᚲᛚᚷᛜᚹᛞᚺᛟᛝᚥᚧᛁᛉᛇ123456789 "; 
+    
+    const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
+    const logContainer = document.getElementById('runes');
+
+    function addLog(customText = null, isAlert = false) {
+        let line = "";
+        if (customText) {
+            line = customText;
+        } else {
+            for(let i=0; i<55; i++) {
+                line += decorativeRunes[Math.floor(Math.random() * decorativeRunes.length)];
+            }
+        }
+        const div = document.createElement('div');
+        div.textContent = line;
+        if (isAlert) div.style.color = "red";
+        logContainer.appendChild(div);
+        if (logContainer.childNodes.length > 7) {
+            logContainer.removeChild(logContainer.firstChild);
+        }
+    }
+
+    let currentBalance = 1000000;
+    function mintToken() {
+        currentBalance += 100;
+        document.getElementById('balance').textContent = currentBalance.toLocaleString();
+        addLog("ᛗᛁ—SECRET_VAULT_MINT_SUCCESS—ᛗᛁ", true);
+    }
+
+    function sealMessage() {
+        const input = document.getElementById('messageInput').value.toUpperCase();
+        let output = "";
+        for (let char of input) {
+            let index = latinAlphabet.indexOf(char);
+            if (index !== -1) {
+                output += dorknetKey[index];
+            } else {
+                output += char;
+            }
+        }
+        document.getElementById('messageInput').value = output;
+        addLog("ᚠ—SECRET_CHAT_MESSAGE_SCELLÉ—ᚠ", true);
+    }
+
+    function unsealMessage() {
+        const input = document.getElementById('messageInput').value;
+        let output = "";
+        for (let char of input) {
+            let index = dorknetKey.indexOf(char);
+            if (index !== -1) {
+                output += latinAlphabet[index];
+            } else {
+                output += char;
+            }
+        }
+        document.getElementById('messageInput').value = output;
+        addLog("ᚠ—SECRET_CHAT_DÉCRYPTAGE_OK—ᚠ", true);
+
+        // --- NOUVEAU : AUTO-DESTRUCTION APRÈS 10 SECONDES ---
+        document.getElementById('statusMsg').textContent = "AUTO-DESTRUCTION DANS 10S...";
+        document.getElementById('statusMsg').style.color = "red";
+        
+        setTimeout(() => {
+            document.getElementById('messageInput').value = "";
+            document.getElementById('statusMsg').textContent = "MESSAGE DÉTRUIT.";
+            addLog("ᛟ—MESSAGE_AUTO_DÉTRUIT—ᛟ", true);
+            setTimeout(() => {
+                document.getElementById('statusMsg').textContent = "DORKNET_SECRET_PROTOCOL_V1";
+                document.getElementById('statusMsg').style.color = "#666";
+            }, 2000);
+        }, 10000);
+    }
+
+    setInterval(addLog, 1200);
+</script>
+
+</body>
+  </html>
+  
