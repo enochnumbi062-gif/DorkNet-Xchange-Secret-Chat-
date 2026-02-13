@@ -92,7 +92,6 @@
 
         .price-up { color: #2d5a27; font-weight: bold; }
         
-        /* --- ANIMATION POUR NOUVEAUX ORDRES --- */
         @keyframes fade-in {
             from { opacity: 0; transform: translateY(-10px); background: rgba(0, 139, 139, 0.2); }
             to { opacity: 1; transform: translateY(0); background: transparent; }
@@ -202,12 +201,6 @@
                     <td>0x88A...F2</td>
                     <td class="price-up">SCELLÉ</td>
                 </tr>
-                <tr>
-                    <td>VENTE</td>
-                    <td>1,200 DNX</td>
-                    <td>0x41B...E9</td>
-                    <td class="price-up">SCELLÉ</td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -231,6 +224,27 @@
     const tableBody = document.getElementById('order-book-body');
     const decorativeRunes = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
 
+    // --- MOTEUR AUDIO MARKET ---
+    function playMarketBeep() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.type = 'sine'; // Son pur pour le marché
+            oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.05);
+        } catch(e) { console.log("Audio bloqué"); }
+    }
+
     // --- SYSTÈME DE LOGS ---
     function addLog(customText = null, isAlert = false) {
         let line = customText || Array.from({length:50}, () => decorativeRunes[Math.floor(Math.random()*decorativeRunes.length)]).join('');
@@ -241,8 +255,10 @@
         if (logContainer.childNodes.length > 4) logContainer.removeChild(logContainer.firstChild);
     }
 
-    // --- GÉNÉRATEUR D'ORDRES ALÉATOIRES (AUTOMATISATION) ---
+    // --- GÉNÉRATEUR D'ORDRES ALÉATOIRES ---
     function generateGhostOrder() {
+        playMarketBeep(); // Signal sonore de transaction
+        
         const types = ["ACHAT", "VENTE", "TRANSFERT"];
         const type = types[Math.floor(Math.random() * types.length)];
         const amount = (Math.random() * 2500 + 50).toFixed(0) + " DNX";
@@ -259,7 +275,6 @@
 
         tableBody.prepend(row);
         
-        // Limiter à 6 lignes pour ne pas déborder du parchemin
         if (tableBody.rows.length > 6) {
             tableBody.deleteRow(tableBody.rows.length - 1);
         }
@@ -268,13 +283,14 @@
     }
 
     function forgeOrder() {
+        playMarketBeep(); // Bip de feedback
         addLog("ᚠ—SIGNATURE_DR_NUMBI_REQUISE—ᚠ", true);
         alert('ACCÈS REQUIS : SIGNATURE NUMÉRIQUE DU DR NUMBI (V2.3)');
     }
 
-    // Initialisation des cycles
+    // Initialisation
     setInterval(addLog, 2000);
-    setInterval(generateGhostOrder, 12000); // Un nouvel ordre toutes les 12 secondes
+    setInterval(generateGhostOrder, 12000); 
 </script>
 
 </body>
