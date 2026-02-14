@@ -12,172 +12,93 @@
             --ink-color: #2b2621;
             --accent-glow: rgba(0, 255, 255, 0.6);
             --rune-color: #008b8b;
-            --alert-red: #b30000; /* Rouge intense pour la visibilité */
+            --alert-red: #b30000; 
         }
 
         body {
             background-color: #1a1a1a;
             color: var(--ink-color);
             font-family: 'Special Elite', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0; overflow: hidden;
         }
 
         #terminal {
-            width: 900px;
-            height: 1250px; 
+            width: 900px; height: 1250px; 
             background: var(--bg-color);
             box-shadow: inset 0 0 100px rgba(0,0,0,0.2), 0 0 50px rgba(0,0,0,0.5);
-            padding: 40px;
-            border: 2px solid #dcd1c1;
+            padding: 40px; border: 2px solid #dcd1c1;
             position: relative;
             background-image: url('https://www.transparenttextures.com/patterns/paper.png');
-            transform: scale(0.65); 
-            z-index: 1;
-            transition: transform 0.1s;
+            transform: scale(0.65); z-index: 1; transition: transform 0.1s;
         }
 
-        /* --- FILIGRANE DU SCEAU DR NUMBI --- */
         .official-seal-bg {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 650px;
-            height: 650px;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='48' fill='none' stroke='%23008b8b' stroke-width='0.5' stroke-dasharray='2' opacity='0.3'/%3e%3ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='6' fill='%23008b8b' opacity='0.4'%3eDORKNET XCHANGE OFFICIAL SEAL%3c/text%3e%3ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='4' fill='%23008b8b' opacity='0.3'%3eDR. ENOCH NUMBI AUTHORIZED%3c/text%3e%3cpath d='M50 5 L95 85 L5 85 Z' fill='none' stroke='%23008b8b' stroke-width='0.2' opacity='0.2'/%3e%3c/svg%3e");
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.2;
-            z-index: -1;
-            pointer-events: none;
-            animation: seal-pulse 8s infinite ease-in-out;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 650px; height: 650px;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='48' fill='none' stroke='%23008b8b' stroke-width='0.5' stroke-dasharray='2' opacity='0.3'/%3e%3ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='6' fill='%23008b8b' opacity='0.4'%3eDORKNET XCHANGE OFFICIAL SEAL%3c/text%3e%3cpath d='M50 5 L95 85 L5 85 Z' fill='none' stroke='%23008b8b' stroke-width='0.2' opacity='0.2'/%3e%3c/svg%3e");
+            background-size: contain; background-repeat: no-repeat;
+            opacity: 0.2; z-index: -1; pointer-events: none; animation: seal-pulse 8s infinite ease-in-out;
         }
 
-        @keyframes seal-pulse {
-            0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.05); }
-        }
-
-        /* --- ANIMATION INCANTATION --- */
-        @keyframes shake {
-            0% { transform: scale(0.65) translate(0,0); }
-            25% { transform: scale(0.65) translate(2px, -2px); }
-            50% { transform: scale(0.65) translate(-2px, 2px); }
-            75% { transform: scale(0.65) translate(2px, 2px); }
-            100% { transform: scale(0.65) translate(0,0); }
-        }
+        @keyframes seal-pulse { 0%, 100% { opacity: 0.15; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.3; transform: translate(-50%, -50%) scale(1.05); } }
+        @keyframes shake { 0% { transform: scale(0.65) translate(0,0); } 25% { transform: scale(0.65) translate(2px, -2px); } 50% { transform: scale(0.65) translate(-2px, 2px); } 75% { transform: scale(0.65) translate(2px, 2px); } 100% { transform: scale(0.65) translate(0,0); } }
         .incantation-active { animation: shake 0.1s infinite !important; }
 
-        /* --- NAVIGATION --- */
         .nav-hub { text-align: center; margin-bottom: 20px; }
         .nav-hub nav { display: inline-block; border: 1px solid var(--ink-color); padding: 10px; background: rgba(0,0,0,0.05); }
-        .nav-link { color: var(--ink-color); text-decoration: none; font-weight: bold; margin: 0 15px; font-size: 0.9rem; transition: 0.3s; }
-        .nav-link:hover { color: var(--rune-color); }
+        .nav-link { color: var(--ink-color); text-decoration: none; font-weight: bold; margin: 0 15px; font-size: 0.9rem; }
 
-        header h1 {
-            font-family: 'UnifrakturMaguntia', serif;
-            font-size: 3.5rem; 
-            text-align: center;
-            margin-bottom: 10px;
-            border-bottom: 2px solid var(--ink-color);
-            padding-bottom: 10px;
-        }
+        header h1 { font-family: 'UnifrakturMaguntia', serif; font-size: 3.5rem; text-align: center; border-bottom: 2px solid var(--ink-color); padding-bottom: 10px; }
 
         .main-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
         section { border: 1px solid var(--ink-color); padding: 15px; background: rgba(255,255,255,0.4); backdrop-filter: blur(1px); }
 
-        .skull-icon {
-            width: 80px; height: auto;
-            filter: drop-shadow(0 0 8px var(--rune-color));
-            animation: pulse-glow 3s infinite ease-in-out;
-        }
+        .skull-icon { width: 80px; filter: drop-shadow(0 0 8px var(--rune-color)); animation: pulse-glow 3s infinite ease-in-out; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
 
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 5px var(--rune-color)); }
-            50% { opacity: 1; filter: drop-shadow(0 0 15px var(--rune-color)); }
-        }
-
-        textarea {
-            width: 96%; height: 60px;
-            background: rgba(255,255,255,0.5);
-            border: 1px solid var(--ink-color);
-            font-family: 'Special Elite';
-            padding: 10px; resize: none; margin-bottom: 10px;
-        }
+        textarea { width: 96%; height: 60px; background: rgba(255,255,255,0.5); border: 1px solid var(--ink-color); font-family: 'Special Elite'; padding: 10px; resize: none; margin-bottom: 10px; }
 
         .security-logs {
-            grid-column: span 2;
-            background: rgba(0,0,0,0.05);
-            border: 1px dashed var(--ink-color);
-            height: 150px; margin-top: 10px; padding: 10px;
-            font-size: 1.1rem; 
-            color: var(--alert-red); /* CHANGEMENT : ROUGE POUR LA VISIBILITÉ */
-            overflow-y: hidden; position: relative;
+            grid-column: span 2; background: rgba(0,0,0,0.05); border: 1px dashed var(--ink-color);
+            height: 150px; margin-top: 10px; padding: 10px; font-size: 1.1rem;
+            color: var(--rune-color); overflow-y: hidden; position: relative;
         }
 
-        .vault-btn {
-            width: 100%; background: none; border: 1px solid var(--ink-color); 
-            font-family: 'Special Elite'; cursor: pointer; padding: 8px; margin-top: 5px; transition: 0.3s;
-        }
+        /* --- STYLE ALERTE ROUGE --- */
+        .log-alert { color: var(--alert-red) !important; font-weight: bold; animation: pulse-red 0.5s infinite; }
+        @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        .vault-btn { width: 100%; background: none; border: 1px solid var(--ink-color); font-family: 'Special Elite'; cursor: pointer; padding: 8px; margin-top: 5px; transition: 0.3s; }
         .vault-btn:hover { background-color: var(--ink-color); color: var(--bg-color); }
 
-        /* --- CORRECTION POSITION PROTOCOLE --- */
-        .protocol-tag {
-            font-size: 0.65rem; 
-            color: #666; 
-            margin-left: 5px; /* Évite de coller au bouton SCELLER */
-            letter-spacing: 0.5px;
-        }
+        .protocol-tag { font-size: 0.65rem; color: #666; margin-left: 10px; }
 
-        .valid-stamp {
-            color: #2d5a27; border: 2px solid #2d5a27; display: inline-block;
-            padding: 5px; font-weight: bold; transform: rotate(-15deg);
-            position: absolute; right: 20px; bottom: 20px; opacity: 0.6;
-        }
+        .valid-stamp { color: #2d5a27; border: 2px solid #2d5a27; padding: 5px; font-weight: bold; transform: rotate(-15deg); position: absolute; right: 20px; bottom: 20px; opacity: 0.6; }
     </style>
 </head>
 <body>
 
 <div id="terminal">
     <div class="official-seal-bg"></div>
-
     <div class="nav-hub">
-        <nav>
-            <a href="./?p=chat" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a>
-            <span style="color: #008b8b;">|</span>
-            <a href="./?p=market" class="nav-link">[ ASSET EXCHANGE ]</a>
-        </nav>
+        <nav><a href="#" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a><span style="color: #008b8b;">|</span><a href="#" class="nav-link">[ ASSET EXCHANGE ]</a></nav>
     </div>
-
-    <header>
-        <h1>DorkNet Xchange Secret Chat</h1>
-    </header>
+    <header><h1>DorkNet Xchange Secret Chat</h1></header>
 
     <div class="main-layout">
         <section class="system-status">
             <h3>SYSTEM STATUS</h3>
-            <div style="text-align: center; margin-bottom: 15px;">
-                <img src="https://img.icons8.com/ios-filled/100/008b8b/skull.png" alt="Skull" class="skull-icon">
-                <div style="font-size: 0.8rem; margin-top: 8px; color: var(--rune-color);">CORE: ACTIVE</div>
-            </div>
-            
-            <div style="border-top: 1px solid var(--ink-color); padding-top: 10px;">
-                <h4 style="font-family: 'UnifrakturMaguntia'; text-align: center; margin: 5px 0;">Asset Vault</h4>
-                <p style="font-size: 0.8rem; margin: 5px 0;">SOLDE: <span id="balance" style="color:var(--rune-color)">1,000,000</span> DNX</p>
+            <div style="text-align: center;"><img src="https://img.icons8.com/ios-filled/100/008b8b/skull.png" class="skull-icon"></div>
+            <div style="border-top: 1px solid var(--ink-color); margin-top: 15px; padding-top: 10px;">
+                <p style="font-size: 0.8rem;">SOLDE: <span id="balance">1,000,000</span> DNX</p>
                 <button class="vault-btn" onclick="mintToken()">EXECUTE INCANTATION</button>
-                <button class="vault-btn" style="margin-top: 15px; border-color: #8b0000; color: #8b0000;" onclick="toggleOpsec()">PROTOCOLE OPSEC</button>
             </div>
         </section>
 
         <section style="text-align: center; position: relative;">
             <h3>MARKET FOCUS</h3>
-            <div style="margin-top: 40px; font-size: 1.2rem;">BTC/USD<br><span style="font-size: 1.8rem; font-weight: bold;">$65,432.10</span></div>
-            <div style="font-size: 0.7rem; margin-top: 10px; color: var(--rune-color);">LIVE_FEED: SECURED</div>
+            <div style="margin-top: 40px; font-size: 1.2rem;">BTC/USD<br><b style="font-size: 1.8rem;">$65,432.10</b></div>
         </section>
 
         <section class="messenger-box" style="grid-column: span 2;">
@@ -192,64 +113,33 @@
             </div>
         </section>
 
-        <section class="security-logs">
-            <div id="runes" class="rune-stream"></div>
-        </section>
+        <section class="security-logs" id="runes"></section>
     </div>
-
-    <div id="opsecModal">
-        <span style="float:right; cursor:pointer;" onclick="toggleOpsec()">[X] FERMER</span>
-        <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center;">Manuel OPSEC</h2>
-        <p>1. Le Crâne pulsant confirme la surveillance du Dr Numbi.</p>
-        <p>2. Chiffrement Polyalphabétique actif.</p>
-        <p>3. Purge irréversible après 10s.</p>
-    </div>
-
     <div class="valid-stamp">TXID: 0x487A... VALIDATED</div>
 </div>
 
 <script>
-    const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
-    const dorknetKey    = "ᛗᚠᛃᚾᛈᚢᛊᚦᛏᚨᛒᚱᛖᚲᛚᚷᛜᚹᛞᚺᛟᛝᚥᚧᛁᛉᛇ123456789 "; 
     const logContainer = document.getElementById('runes');
     const terminal = document.getElementById('terminal');
+    const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
+    const dorknetKey    = "ᛗᚠᛃᚾᛈᚢᛊᚦᛏᚨᛒᚱᛖᚲᛚᚷᛜᚹᛞᚺᛟᛝᚥᚧᛁᛉᛇ123456789 "; 
 
-    function playBeep(freq = 800, dur = 0.1) {
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            const g = ctx.createGain();
-            osc.type = 'square'; osc.frequency.setValueAtTime(freq, ctx.currentTime);
-            g.gain.setValueAtTime(0.05, ctx.currentTime);
-            g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
-            osc.connect(g); g.connect(ctx.destination);
-            osc.start(); osc.stop(ctx.currentTime + dur);
-        } catch(e) {}
-    }
-
-    function addLog(text = null) {
+    function addLog(text = null, isAlert = false) {
         const chars = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
         let line = text || Array.from({length:55}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
         const div = document.createElement('div');
         div.textContent = line;
+        if (isAlert) div.className = "log-alert";
         logContainer.appendChild(div);
         if (logContainer.childNodes.length > 7) logContainer.removeChild(logContainer.firstChild);
     }
 
-    function toggleOpsec() {
-        const m = document.getElementById('opsecModal');
-        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
-        playBeep(600);
-    }
-
     function mintToken() {
         terminal.classList.add('incantation-active');
-        playBeep(200, 0.5); 
         setTimeout(() => {
             terminal.classList.remove('incantation-active');
             let b = document.getElementById('balance');
             b.textContent = (parseInt(b.textContent.replace(/,/g, '')) + 100).toLocaleString();
-            playBeep(1200, 0.1);
             addLog("ᛗᛁ—INCANTATION_TOKEN_RÉUSSIE—ᛗᛁ");
         }, 800);
     }
@@ -257,7 +147,6 @@
     function sealMessage() {
         const input = document.getElementById('messageInput').value.toUpperCase();
         if (!input) return;
-        playBeep(400, 0.3);
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = latinAlphabet.indexOf(input[i]);
@@ -270,7 +159,6 @@
     function unsealMessage() {
         const input = document.getElementById('messageInput').value;
         if (!input) return;
-        playBeep(1000, 0.2);
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = dorknetKey.indexOf(input[i]);
@@ -278,14 +166,20 @@
         }
         document.getElementById('messageInput').value = output;
         addLog("ᚠ—UNSEAL_COMPLETED—ᚠ");
-        
-        setTimeout(() => {
-            document.getElementById('messageInput').value = "";
-            addLog("ᛟ—PURGE_COMPLETE—ᛟ");
-        }, 10000);
+
+        let timeLeft = 10;
+        const countdown = setInterval(() => {
+            addLog(`⚠️ AUTO-DESTRUCTION DANS ${timeLeft}s...`, true);
+            timeLeft--;
+            if (timeLeft < 0) {
+                clearInterval(countdown);
+                document.getElementById('messageInput').value = "";
+                addLog("ᛟ—MESSAGE PURGÉ—ᛟ", true);
+            }
+        }, 1000);
     }
 
-    setInterval(addLog, 2000);
+    setInterval(() => addLog(), 2000);
 </script>
 </body>
 </html>
