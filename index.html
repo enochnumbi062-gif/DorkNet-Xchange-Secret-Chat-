@@ -47,7 +47,8 @@
 
         .nav-hub { text-align: center; margin-bottom: 20px; }
         .nav-hub nav { display: inline-block; border: 1px solid var(--ink-color); padding: 10px; background: rgba(0,0,0,0.05); }
-        .nav-link { color: var(--ink-color); text-decoration: none; font-weight: bold; margin: 0 15px; font-size: 0.9rem; }
+        .nav-link { color: var(--ink-color); text-decoration: none; font-weight: bold; margin: 0 15px; font-size: 0.9rem; transition: 0.3s; }
+        .nav-link:hover { color: var(--rune-color); }
 
         header h1 { font-family: 'UnifrakturMaguntia', serif; font-size: 3.5rem; text-align: center; border-bottom: 2px solid var(--ink-color); padding-bottom: 10px; }
 
@@ -88,7 +89,11 @@
 <div id="terminal">
     <div class="official-seal-bg"></div>
     <div class="nav-hub">
-        <nav><a href="#" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a><span style="color: #008b8b;">|</span><a href="#" class="nav-link">[ ASSET EXCHANGE ]</a></nav>
+        <nav>
+            <a href="./?p=chat" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a>
+            <span style="color: #008b8b;">|</span>
+            <a href="./?p=market" class="nav-link">[ ASSET EXCHANGE ]</a>
+        </nav>
     </div>
     <header><h1>DorkNet Xchange Secret Chat</h1></header>
 
@@ -140,7 +145,21 @@
     const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
     const dorknetKey    = "ᛗᚠᛃᚾᛈᚢᛊᚦᛏᚨᛒᚱᛖᚲᛚᚷᛜᚹᛞᚺᛟᛝᚥᚧᛁᛉᛇ123456789 "; 
 
+    function playBeep(freq = 800, dur = 0.1) {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.type = 'square'; osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            g.gain.setValueAtTime(0.05, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+            osc.connect(g); g.connect(ctx.destination);
+            osc.start(); osc.stop(ctx.currentTime + dur);
+        } catch(e) {}
+    }
+
     function toggleOpsec() {
+        playBeep(600);
         const m = document.getElementById('opsecModal');
         m.style.display = (m.style.display === 'block') ? 'none' : 'block';
     }
@@ -157,10 +176,12 @@
 
     function mintToken() {
         terminal.classList.add('incantation-active');
+        playBeep(200, 0.5);
         setTimeout(() => {
             terminal.classList.remove('incantation-active');
             let b = document.getElementById('balance');
             b.textContent = (parseInt(b.textContent.replace(/,/g, '')) + 100).toLocaleString();
+            playBeep(1200, 0.1);
             addLog("ᛗᛁ—INCANTATION_TOKEN_RÉUSSIE—ᛗᛁ");
         }, 800);
     }
@@ -168,6 +189,7 @@
     function sealMessage() {
         const input = document.getElementById('messageInput').value.toUpperCase();
         if (!input) return;
+        playBeep(400, 0.3);
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = latinAlphabet.indexOf(input[i]);
@@ -180,6 +202,7 @@
     function unsealMessage() {
         const input = document.getElementById('messageInput').value;
         if (!input) return;
+        playBeep(1000, 0.2);
         let output = "";
         for (let i = 0; i < input.length; i++) {
             let index = dorknetKey.indexOf(input[i]);
@@ -196,6 +219,7 @@
                 clearInterval(countdown);
                 document.getElementById('messageInput').value = "";
                 addLog("ᛟ—MESSAGE PURGÉ—ᛟ", true);
+                playBeep(200, 0.5);
             }
         }, 1000);
     }
