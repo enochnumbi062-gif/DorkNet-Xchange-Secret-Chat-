@@ -36,7 +36,7 @@
         .official-seal-bg {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 650px; height: 650px;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='48' fill='none' stroke='%23008b8b' stroke-width='0.5' stroke-dasharray='2' opacity='0.3'/%3e%3ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='6' fill='%23008b8b' opacity='0.4'%3eDORKNET XCHANGE OFFICIAL SEAL%3c/text%3e%3cpath d='M50 5 L95 85 L5 85 Z' fill='none' stroke='%23008b8b' stroke-width='0.2' opacity='0.2'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='48' fill='none' stroke='%23008b8b' stroke-width='0.5' stroke-dasharray='2' opacity='0.3'/%3e%3ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='6' fill='%23008b8b' opacity='0.4'%3eDORKNET XCHANGE OFFICIAL SEAL%3c/text%3e%3ctext x='50%25' y='60%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='4' fill='%23008b8b' opacity='0.3'%3eDR. ENOCH NUMBI AUTHORIZED%3c/text%3e%3cpath d='M50 5 L95 85 L5 85 Z' fill='none' stroke='%23008b8b' stroke-width='0.2' opacity='0.2'/%3e%3c/svg%3e");
             background-size: contain; background-repeat: no-repeat;
             opacity: 0.2; z-index: -1; pointer-events: none; animation: seal-pulse 8s infinite ease-in-out;
         }
@@ -65,12 +65,18 @@
             color: var(--rune-color); overflow-y: hidden; position: relative;
         }
 
-        /* --- STYLE ALERTE ROUGE --- */
         .log-alert { color: var(--alert-red) !important; font-weight: bold; animation: pulse-red 0.5s infinite; }
         @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
         .vault-btn { width: 100%; background: none; border: 1px solid var(--ink-color); font-family: 'Special Elite'; cursor: pointer; padding: 8px; margin-top: 5px; transition: 0.3s; }
         .vault-btn:hover { background-color: var(--ink-color); color: var(--bg-color); }
+
+        #opsecModal {
+            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80%; height: 70%; background: var(--bg-color); border: 3px double var(--ink-color);
+            box-shadow: 0 0 100px rgba(0,0,0,0.8); z-index: 100; padding: 30px; 
+            background-image: url('https://www.transparenttextures.com/patterns/paper.png');
+        }
 
         .protocol-tag { font-size: 0.65rem; color: #666; margin-left: 10px; }
 
@@ -93,6 +99,7 @@
             <div style="border-top: 1px solid var(--ink-color); margin-top: 15px; padding-top: 10px;">
                 <p style="font-size: 0.8rem;">SOLDE: <span id="balance">1,000,000</span> DNX</p>
                 <button class="vault-btn" onclick="mintToken()">EXECUTE INCANTATION</button>
+                <button class="vault-btn" style="margin-top: 10px; border-color: #8b0000; color: #8b0000;" onclick="toggleOpsec()">PROTOCOLE OPSEC</button>
             </div>
         </section>
 
@@ -115,6 +122,15 @@
 
         <section class="security-logs" id="runes"></section>
     </div>
+
+    <div id="opsecModal">
+        <span style="float:right; cursor:pointer;" onclick="toggleOpsec()">[X] FERMER</span>
+        <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center;">Manuel OPSEC</h2>
+        <p>1. Le Crâne pulsant confirme la surveillance du Dr Numbi.</p>
+        <p>2. Chiffrement Polyalphabétique actif.</p>
+        <p>3. Purge irréversible après 10s.</p>
+    </div>
+
     <div class="valid-stamp">TXID: 0x487A... VALIDATED</div>
 </div>
 
@@ -123,6 +139,11 @@
     const terminal = document.getElementById('terminal');
     const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
     const dorknetKey    = "ᛗᚠᛃᚾᛈᚢᛊᚦᛏᚨᛒᚱᛖᚲᛚᚷᛜᚹᛞᚺᛟᛝᚥᚧᛁᛉᛇ123456789 "; 
+
+    function toggleOpsec() {
+        const m = document.getElementById('opsecModal');
+        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+    }
 
     function addLog(text = null, isAlert = false) {
         const chars = "ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛈᛊᛏᛒᛖᛗᛚᛜᛞᛟᛝ";
