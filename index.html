@@ -130,10 +130,13 @@
 
     <div id="opsecModal">
         <span style="float:right; cursor:pointer;" onclick="toggleOpsec()">[X] FERMER</span>
-        <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center;">Manuel OPSEC</h2>
-        <p>1. Le Crâne pulsant confirme la surveillance du Dr Numbi.</p>
-        <p>2. Chiffrement Polyalphabétique actif.</p>
-        <p>3. Purge irréversible après 10s.</p>
+        <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center;">Manuel OPSEC / DorkNet</h2>
+        <p>1. <b>Surveillance Biométrique :</b> Le Crâne pulsant confirme la présence et l'autorité du Dr Numbi sur le nœud local.</p>
+        <p>2. <b>Chiffrement Avancé :</b> Algorithme Polyalphabétique dynamique actif. Toute interception résultera en un bruit runique indéchiffrable.</p>
+        <p>3. <b>Purge de Données :</b> Suppression irréversible des traces mémorielles après un délai de 10 secondes.</p>
+        <p>4. <b>Intégrité du Réseau :</b> Toute tentative de force brute déclenchera un scellement définitif de votre coffre DNX.</p>
+        <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
+        <p style="text-align: center; font-style: italic;">"Le silence est l'argument ultime du pouvoir sur DorkNet Xchange."</p>
     </div>
 
     <div class="valid-stamp">TXID: 0x487A... VALIDATED</div>
@@ -161,7 +164,9 @@
     function toggleOpsec() {
         playBeep(600);
         const m = document.getElementById('opsecModal');
-        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+        const isOpen = m.style.display === 'block';
+        m.style.display = isOpen ? 'none' : 'block';
+        if(!isOpen) addLog("ᚦ—ACCÈS_MANUEL_OPSEC—ᚦ");
     }
 
     function addLog(text = null, isAlert = false) {
