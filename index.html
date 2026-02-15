@@ -33,6 +33,27 @@
             transform: scale(0.65); z-index: 1; transition: transform 0.1s;
         }
 
+        /* --- EFFET PENTAGRANE --- */
+        .pentagrane-container {
+            position: relative; width: 300px; height: 300px; margin: 20px auto;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .pentagrane-aura {
+            position: absolute; width: 220px; height: 220px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            border-radius: 50%; animation: aura-pulse 4s infinite ease-in-out;
+        }
+        .pentagrane-svg {
+            width: 100%; height: 100%; filter: drop-shadow(0 0 5px var(--rune-color));
+            z-index: 2;
+        }
+        .market-data-overlay {
+            position: absolute; z-index: 3; text-align: center; font-weight: bold;
+            text-shadow: 0 0 10px white;
+        }
+        @keyframes aura-pulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 0.8; } }
+        /* ------------------------ */
+
         .official-seal-bg {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 650px; height: 650px;
@@ -67,8 +88,6 @@
         }
 
         .log-alert { color: var(--alert-red) !important; font-weight: bold; animation: pulse-red 0.5s infinite; }
-        @keyframes pulse-red { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
-
         .vault-btn { width: 100%; background: none; border: 1px solid var(--ink-color); font-family: 'Special Elite'; cursor: pointer; padding: 8px; margin-top: 5px; transition: 0.3s; }
         .vault-btn:hover { background-color: var(--ink-color); color: var(--bg-color); }
 
@@ -78,9 +97,6 @@
             box-shadow: 0 0 100px rgba(0,0,0,0.8); z-index: 100; padding: 30px; 
             background-image: url('https://www.transparenttextures.com/patterns/paper.png');
         }
-
-        .protocol-tag { font-size: 0.65rem; color: #666; margin-left: 10px; }
-
         .valid-stamp { color: #2d5a27; border: 2px solid #2d5a27; padding: 5px; font-weight: bold; transform: rotate(-15deg); position: absolute; right: 20px; bottom: 20px; opacity: 0.6; }
     </style>
 </head>
@@ -90,9 +106,9 @@
     <div class="official-seal-bg"></div>
     <div class="nav-hub">
         <nav>
-            <a href="./?p=chat" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a>
+            <a href="index.html" class="nav-link" style="color: #008b8b;">[ ABYSSAL CHAT ]</a>
             <span style="color: #008b8b;">|</span>
-            <a href="./?p=market" class="nav-link">[ ASSET EXCHANGE ]</a>
+            <a href="market.html" class="nav-link">[ ASSET EXCHANGE ]</a>
         </nav>
     </div>
     <header><h1>DorkNet Xchange Secret Chat</h1></header>
@@ -109,15 +125,26 @@
         </section>
 
         <section style="text-align: center; position: relative;">
-            <h3>MARKET FOCUS</h3>
-            <div style="margin-top: 40px; font-size: 1.2rem;">BTC/USD<br><b style="font-size: 1.8rem;">$65,432.10</b></div>
+            <h3>MARKET AMPSTEM</h3>
+            <div class="pentagrane-container">
+                <div class="pentagrane-aura"></div>
+                <svg class="pentagrane-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#2b2621" stroke-width="0.5"/>
+                    <path d="M50 5 L89 73 L11 73 Z" fill="none" stroke="#2b2621" stroke-width="1"/>
+                    <path d="M50 95 L11 27 L89 27 Z" fill="none" stroke="#2b2621" stroke-width="1"/>
+                </svg>
+                <div class="market-data-overlay">
+                    <span style="font-size: 0.8rem;">BTC/USD</span><br>
+                    <span style="font-size: 1.4rem;">$65,432.10</span>
+                </div>
+            </div>
         </section>
 
         <section class="messenger-box" style="grid-column: span 2;">
             <h3>ABYSSAL MESSENGER</h3>
             <textarea id="messageInput" placeholder="Écrivez votre message secret..."></textarea>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="protocol-tag">DORKNET_SECRET_PROTOCOL_V2.2</div>
+                <div style="font-size: 0.65rem; color: #666;">DORKNET_SECRET_PROTOCOL_V2.2</div>
                 <div style="display: flex; gap: 10px;">
                     <button class="vault-btn" style="width: 120px;" onclick="sealMessage()">SCELLER</button>
                     <button class="vault-btn" style="width: 120px;" onclick="unsealMessage()">OUVRIR</button>
@@ -131,12 +158,11 @@
     <div id="opsecModal">
         <span style="float:right; cursor:pointer;" onclick="toggleOpsec()">[X] FERMER</span>
         <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center;">Manuel OPSEC / DorkNet</h2>
-        <p>1. <b>Surveillance Biométrique :</b> Le Crâne pulsant confirme la présence et l'autorité du Dr Numbi sur le nœud local.</p>
-        <p>2. <b>Chiffrement Avancé :</b> Algorithme Polyalphabétique dynamique actif. Toute interception résultera en un bruit runique indéchiffrable.</p>
-        <p>3. <b>Purge de Données :</b> Suppression irréversible des traces mémorielles après un délai de 10 secondes.</p>
-        <p>4. <b>Intégrité du Réseau :</b> Toute tentative de force brute déclenchera un scellement définitif de votre coffre DNX.</p>
+        <p>1. <b>Surveillance Biométrique :</b> Le Crâne pulsant confirme la présence et l'autorité du Dr Numbi.</p>
+        <p>2. <b>Chiffrement Avancé :</b> Algorithme Polyalphabétique dynamique actif.</p>
+        <p>3. <b>Purge de Données :</b> Suppression après 10 secondes.</p>
         <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
-        <p style="text-align: center; font-style: italic;">"Le silence est l'argument ultime du pouvoir sur DorkNet Xchange."</p>
+        <p style="text-align: center; font-style: italic;">"Le silence est l'argument ultime du pouvoir."</p>
     </div>
 
     <div class="valid-stamp">TXID: 0x487A... VALIDATED</div>
