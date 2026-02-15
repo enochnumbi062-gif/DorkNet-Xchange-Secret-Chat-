@@ -16,7 +16,6 @@
         }
 
         /* --- HACK DE LA BARRE LATÉRALE STREAMLIT --- */
-        /* Ce bloc cible les éléments internes de Streamlit une fois déployé */
         [data-testid="stSidebar"] {
             background-color: #0a0a0a !important;
             border-right: 2px solid var(--rune-color);
@@ -51,7 +50,7 @@
         .pentagrane-container {
             position: relative; width: 300px; height: 300px; margin: 20px auto;
             display: flex; align-items: center; justify-content: center;
-            pointer-events: none; /* FIX: Permet de cliquer sur les menus derrière */
+            pointer-events: none; 
         }
         .pentagrane-aura {
             position: absolute; width: 220px; height: 220px;
@@ -129,7 +128,7 @@
         <nav>
             <a href="/" class="nav-link" style="color: #008b8b;" target="_self">[ ABYSSAL CHAT ]</a>
             <span style="color: #008b8b;">|</span>
-            <a href="/market" class="nav-link" target="_self">[ ASSET EXCHANGE ]</a>
+            <a href="/?p=market" class="nav-link" target="_self">[ ASSET EXCHANGE ]</a>
         </nav>
     </div>
     <header><h1>DorkNet Xchange Secret Chat</h1></header>
@@ -190,7 +189,6 @@
 </div>
 
 <script>
-    /* TOUTES VOS FONCTIONS SONT PRÉSERVÉES À 100% */
     const logContainer = document.getElementById('runes');
     const terminal = document.getElementById('terminal');
     const latinAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
@@ -250,6 +248,10 @@
         }
         document.getElementById('messageInput').value = output;
         addLog("ᚠ—SEAL_COMPLETED—ᚠ");
+
+        /* INTEGRATION STREAMLIT : Envoi automatique au Vault Python */
+        const streamlitUrl = window.location.origin + "/?msg=" + encodeURIComponent(output);
+        window.parent.location.href = streamlitUrl;
     }
 
     function unsealMessage() {
