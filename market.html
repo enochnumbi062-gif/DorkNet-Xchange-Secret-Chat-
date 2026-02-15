@@ -33,7 +33,7 @@
             transition: transform 0.1s;
         }
 
-        /* --- EFFET PENTAGRANE (INTÉGRATION) --- */
+        /* --- EFFET PENTAGRANE FIXÉ AVEC ROTATION 360° --- */
         .pentagrane-container {
             position: relative; width: 220px; height: 220px; margin: 10px auto;
             display: flex; align-items: center; justify-content: center;
@@ -46,6 +46,11 @@
         .pentagrane-svg {
             width: 100%; height: 100%; filter: drop-shadow(0 0 5px var(--rune-color));
             z-index: 2;
+            animation: rotate-pentagrane 25s linear infinite; /* ROTATION RÉTABLIE */
+        }
+        @keyframes rotate-pentagrane { 
+            from { transform: rotate(0deg); } 
+            to { transform: rotate(360deg); } 
         }
         @keyframes aura-pulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 0.7; } }
 
