@@ -96,8 +96,8 @@
         .main-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
         section { border: 1px solid var(--ink-color); padding: 15px; background: rgba(255,255,255,0.4); backdrop-filter: blur(1px); }
 
-        .skull-icon { width: 80px; filter: drop-shadow(0 0 8px var(--rune-color)); animation: pulse-glow 3s infinite ease-in-out; }
-        @keyframes pulse-glow { 0%, 100% { opacity: 0.8; } 50% { opacity: 1; } }
+        .skull-icon { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 0 10px var(--rune-color)); border-radius: 50%; border: 1px solid var(--rune-color); animation: pulse-glow 3s infinite ease-in-out; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 
         textarea { width: 96%; height: 60px; background: rgba(255,255,255,0.5); border: 1px solid var(--ink-color); font-family: 'Special Elite'; padding: 10px; resize: none; margin-bottom: 10px; }
 
@@ -136,8 +136,12 @@
     <div class="main-layout">
         <section class="system-status">
             <h3>SYSTEM STATUS</h3>
-            <div style="text-align: center;"><img src="https://img.icons8.com/ios-filled/100/008b8b/skull.png" class="skull-icon"></div>
+            <div style="text-align: center; position: relative; padding: 10px;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 110px; height: 110px; background: radial-gradient(circle, var(--rune-color) 0%, transparent 70%); opacity: 0.3; border-radius: 50%; pointer-events: none;"></div>
+                <img src="https://r.jina.ai/i/6696788f615340639967727145785f70" class="skull-icon" alt="DR NUMBI SEAL">
+            </div>
             <div style="border-top: 1px solid var(--ink-color); margin-top: 15px; padding-top: 10px;">
+                <p style="font-size: 0.8rem; text-align: center; letter-spacing: 2px;">AUTHORITY: <b>DR_NUMBI</b></p>
                 <p style="font-size: 0.8rem;">SOLDE: <span id="balance">1,000,000</span> DNX</p>
                 <button class="vault-btn" onclick="mintToken()">EXECUTE INCANTATION</button>
                 <button class="vault-btn" style="margin-top: 10px; border-color: #8b0000; color: #8b0000;" onclick="toggleOpsec()">PROTOCOLE OPSEC</button>
@@ -178,7 +182,7 @@
     <div id="opsecModal">
         <span style="float:right; cursor:pointer;" onclick="toggleOpsec()">[X] FERMER</span>
         <h2 style="font-family: 'UnifrakturMaguntia'; text-align: center;">Manuel OPSEC / DorkNet</h2>
-        <p>1. <b>Surveillance Biométrique :</b> Le Crâne pulsant confirme la présence et l'autorité du Dr Numbi.</p>
+        <p>1. <b>Surveillance Biométrique :</b> Le Sceau pulsant confirme la présence et l'autorité du Dr Numbi.</p>
         <p>2. <b>Chiffrement Avancé :</b> Algorithme Polyalphabétique dynamique actif.</p>
         <p>3. <b>Purge de Données :</b> Suppression après 10 secondes.</p>
         <hr style="border: 0; border-top: 1px solid #ccc; margin: 20px 0;">
